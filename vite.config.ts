@@ -23,7 +23,13 @@ export default defineConfig({
         target: 'https://localhost:3333',
         changeOrigin: true,
         secure: false, // karena Gophish pakai self-signed cert
-      }
+      },
+      // Proxy ke Ark API
+      '/ark-api': {
+        target: 'https://ark.ap-southeast.bytepluses.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/ark-api/, ''),
+      },
     }
   }
 })

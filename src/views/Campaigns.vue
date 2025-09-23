@@ -18,8 +18,13 @@
 
         <div class="col-span-5 mb-3">
             <AlertTips
-            variant="success"
+            variant="info"
             title="Tips Membuat Campaign Phising"
+            message='<ul class="list-disc pl-5 text-gray-700 dark:text-gray-300">
+            <li>Gunakan nama campaign yang spesifik dan mudah diingat.</li>
+            <li>Pastikan landing page sudah sesuai dan aman.</li>
+            <li>Gunakan sending profile yang sudah diverifikasi.</li>
+            </ul>'
             :showLink="false" />
         </div>
 

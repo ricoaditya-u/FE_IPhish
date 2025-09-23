@@ -11,11 +11,7 @@
         </h4>
 
         <p class="text-sm text-gray-500 dark:text-gray-400">
-          <ul class="list-disc pl-5 text-gray-700 dark:text-gray-300">
-            <li>Gunakan nama campaign yang spesifik dan mudah diingat.</li>
-            <li>Pastikan landing page sudah sesuai dan aman.</li>
-            <li>Gunakan sending profile yang sudah diverifikasi.</li>
-          </ul>
+          <span v-html="message"></span>
         </p>
 
         <router-link

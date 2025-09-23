@@ -54,6 +54,22 @@ const router = createRouter({
         title: 'Sending Profiles',
       },
     },
+    {
+      path: '/usermanagement',
+      name: 'User Management',
+      component: () => import('../views/UserManagement.vue'),
+      meta: {
+        title: 'User Management',
+      },
+    },
+    {
+      path: '/accountsettings',
+      name: 'Account Settings',
+      component: () => import('../views/AccountSettings.vue'),
+      meta: {
+        title: 'Account Settings',
+      },
+    },
 
 
 
@@ -191,6 +207,6 @@ const router = createRouter({
 export default router
 
 router.beforeEach((to, from, next) => {
-  document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`
+  document.title = `${to.meta.title} | iPhish - AI Phising Simulation Platform`
   next()
 })
