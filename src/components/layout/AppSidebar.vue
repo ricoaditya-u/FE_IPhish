@@ -23,7 +23,7 @@
         <img
           v-if="isExpanded || isHovered || isMobileOpen"
           class="dark:hidden"
-          src="/images/logo/logo.svg"
+          src="/images/logo/IPhish.png"
           alt="Logo"
           width="150"
           height="40"
@@ -31,14 +31,14 @@
         <img
           v-if="isExpanded || isHovered || isMobileOpen"
           class="hidden dark:block"
-          src="/images/logo/logo-dark.svg"
+          src="/images/logo/dark_iphish.png"
           alt="Logo"
           width="150"
           height="40"
         />
         <img
           v-else
-          src="/images/logo/logo-icon.svg"
+          src="/images/logo/dark_iphish_minicon.png"
           alt="Logo"
           width="32"
           height="32"
@@ -219,20 +219,17 @@ import {
   GridIcon,
   CalenderIcon,
   UserCircleIcon,
-  ChatIcon,
+  UserGroupIcon,
   MailIcon,
-  DocsIcon,
-  PieChartIcon,
   ChevronDownIcon,
   HorizontalDots,
+  SendIcon,
   PageIcon,
-  TableIcon,
-  ListIcon,
-  PlugInIcon,
 } from "../../icons";
-import SidebarWidget from "./SidebarWidget.vue";
+// import SidebarWidget from "./SidebarWidget.vue";
 import BoxCubeIcon from "@/icons/BoxCubeIcon.vue";
 import { useSidebar } from "@/composables/useSidebar";
+import SettingsIcon from "@/icons/SettingsIcon.vue";
 
 const route = useRoute();
 
@@ -240,43 +237,37 @@ const { isExpanded, isMobileOpen, isHovered, openSubmenu } = useSidebar();
 
 const menuGroups = [
   {
-    title: "Menu",
+    title: "Feature Menu",
     items: [
       {
         icon: GridIcon,
         name: "Dashboard",
-        subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+        path: "/",
       },
       {
         icon: CalenderIcon,
-        name: "Calendar",
-        path: "/calendar",
+        name: "Campaigns",
+        path: "/campaigns",
       },
       {
-        icon: UserCircleIcon,
-        name: "User Profile",
-        path: "/profile",
-      },
-
-      {
-        name: "Forms",
-        icon: ListIcon,
-        subItems: [
-          { name: "Form Elements", path: "/form-elements", pro: false },
-        ],
+        icon: UserGroupIcon,
+        name: "Users and Groups",
+        path: "/usersngroups",
       },
       {
-        name: "Tables",
-        icon: TableIcon,
-        subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
+        icon: MailIcon,
+        name: "Email Templates",
+        path: "/emailtemplates",
       },
       {
-        name: "Pages",
         icon: PageIcon,
-        subItems: [
-          { name: "Black Page", path: "/blank", pro: false },
-          { name: "404 Page", path: "/error-404", pro: false },
-        ],
+        name: "Landing Pages",
+        path: "/landingpages",
+      },
+      {
+        icon: SendIcon,
+        name: "Sending Profiles",
+        path: "/sendingprofiles",
       },
     ],
   },
@@ -284,34 +275,15 @@ const menuGroups = [
     title: "Others",
     items: [
       {
-        icon: PieChartIcon,
-        name: "Charts",
-        subItems: [
-          { name: "Line Chart", path: "/line-chart", pro: false },
-          { name: "Bar Chart", path: "/bar-chart", pro: false },
-        ],
+        icon: UserCircleIcon,
+        name: "User Management",
+        path: "/usermanagement",
       },
       {
-        icon: BoxCubeIcon,
-        name: "Ui Elements",
-        subItems: [
-          { name: "Alerts", path: "/alerts", pro: false },
-          { name: "Avatars", path: "/avatars", pro: false },
-          { name: "Badge", path: "/badge", pro: false },
-          { name: "Buttons", path: "/buttons", pro: false },
-          { name: "Images", path: "/images", pro: false },
-          { name: "Videos", path: "/videos", pro: false },
-        ],
+        icon: SettingsIcon,
+        name: "Account Settings",
+        path: "/accountsettings",
       },
-      {
-        icon: PlugInIcon,
-        name: "Authentication",
-        subItems: [
-          { name: "Signin", path: "/signin", pro: false },
-          { name: "Signup", path: "/signup", pro: false },
-        ],
-      },
-      // ... Add other menu items here
     ],
   },
 ];

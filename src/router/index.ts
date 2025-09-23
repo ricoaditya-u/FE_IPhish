@@ -8,12 +8,57 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Ecommerce',
-      component: () => import('../views/Ecommerce.vue'),
+      name: 'Phising Dashboard',
+      component: () => import('../views/Dashboard.vue'),
       meta: {
-        title: 'eCommerce Dashboard',
+        title: 'Phising Dashboard',
       },
     },
+    {
+      path: '/campaigns',
+      name: 'Campaigns IPhish',
+      component: () => import('../views/Campaigns.vue'),
+      meta: {
+        title: 'Campaigns IPhish',
+      },
+    },
+    {
+      path: '/usersngroups',
+      name: 'Users & Groups',
+      component: () => import('../views/UsersGroups.vue'),
+      meta: {
+        title: 'Users & Groups',
+      },
+    },
+    {
+      path: '/emailtemplates',
+      name: 'Email Templates',
+      component: () => import('../views/EmailTemplates.vue'),
+      meta: {
+        title: 'Email Templates',
+      },
+    },
+    {
+      path: '/landingpages',
+      name: 'Landing Pages',
+      component: () => import('../views/LandingPages.vue'),
+      meta: {
+        title: 'Landing Pages',
+      },
+    },
+    {
+      path: '/sendingprofiles',
+      name: 'Sending Profiles',
+      component: () => import('../views/SendingProfiles.vue'),
+      meta: {
+        title: 'Sending Profiles',
+      },
+    },
+
+
+
+
+
     {
       path: '/calendar',
       name: 'Calendar',

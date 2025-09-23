@@ -4,7 +4,7 @@
   >
     <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Recent Orders</h3>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Recent Campaigns</h3>
       </div>
 
       <div class="flex items-center gap-3">
@@ -63,60 +63,60 @@
         <thead>
           <tr class="border-t border-gray-100 dark:border-gray-800">
             <th class="py-3 text-left">
-              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Products</p>
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Name</p>
             </th>
             <th class="py-3 text-left">
-              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Category</p>
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Created Date</p>
             </th>
             <th class="py-3 text-left">
-              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Price</p>
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Sent</p>
+            </th>
+            <th class="py-3 text-left">
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Clicked</p>
             </th>
             <th class="py-3 text-left">
               <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Status</p>
+            </th>
+            <th class="py-3 text-left">
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Action</p>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr
-            v-for="(product, index) in products"
+            v-for="(data, index) in datas"
             :key="index"
             class="border-t border-gray-100 dark:border-gray-800"
           >
             <td class="py-3 whitespace-nowrap">
-              <div class="flex items-center gap-3">
-                <div class="h-[50px] w-[50px] overflow-hidden rounded-md">
-                  <img :src="product.image" :alt="product.name" />
-                </div>
-                <div>
-                  <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                    {{ product.name }}
-                  </p>
-                  <span class="text-gray-500 text-theme-xs dark:text-gray-400"
-                    >{{ product.variants }} Variants</span
-                  >
-                </div>
-              </div>
+              <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ data.name }}</p>
             </td>
             <td class="py-3 whitespace-nowrap">
-              <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ product.category }}</p>
+              <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ data.created_date }}</p>
             </td>
             <td class="py-3 whitespace-nowrap">
-              <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ product.price }}</p>
+              <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ data.sent }}</p>
+            </td>
+            <td class="py-3 whitespace-nowrap">
+              <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ data.clicked }}</p>
             </td>
             <td class="py-3 whitespace-nowrap">
               <span
                 :class="{
                   'rounded-full px-2 py-0.5 text-theme-xs font-medium': true,
                   'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500':
-                    product.status === 'Delivered',
+                    data.status === 'Completed',
                   'bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400':
-                    product.status === 'Pending',
+                    data.status === 'In Progress',
                   'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500':
-                    product.status === 'Canceled',
+                    data.status === 'Canceled',
                 }"
               >
-                {{ product.status }}
+                {{ data.status }}
               </span>
+            </td>
+            <td class="py-3 whitespace-nowrap">
+              <p class="text-gray-500 text-theme-sm dark:text-gray-400">Action</p>
             </td>
           </tr>
         </tbody>
@@ -128,46 +128,20 @@
 <script setup>
 import { ref } from 'vue'
 
-const products = ref([
+const datas = ref([
   {
-    name: 'Macbook pro 13"',
-    variants: 2,
-    image: '/images/product/product-01.jpg',
-    category: 'Laptop',
-    price: '$2399.00',
-    status: 'Delivered',
+    name: 'Initial Awareness Test',
+    created_date: 'August 11th 2025, 11:51:07 pm',
+    sent: 20,
+    clicked: 10,
+    status: 'In Progress',
   },
   {
-    name: 'Apple Watch Ultra',
-    variants: 1,
-    image: '/images/product/product-02.jpg',
-    category: 'Watch',
-    price: '$879.00',
-    status: 'Pending',
-  },
-  {
-    name: 'iPhone 15 Pro Max',
-    variants: 2,
-    image: '/images/product/product-03.jpg',
-    category: 'SmartPhone',
-    price: '$1869.00',
-    status: 'Delivered',
-  },
-  {
-    name: 'iPad Pro 3rd Gen',
-    variants: 2,
-    image: '/images/product/product-04.jpg',
-    category: 'Electronics',
-    price: '$1699.00',
-    status: 'Canceled',
-  },
-  {
-    name: 'Airpods Pro 2nd Gen',
-    variants: 1,
-    image: '/images/product/product-05.jpg',
-    category: 'Accessories',
-    price: '$240.00',
-    status: 'Delivered',
+    name: 'New Employee Onboarding',
+    created_date: 'August 10th 2025, 11:47:56 pm',
+    sent: 20,
+    clicked: 10,
+    status: 'Completed',
   },
 ])
 </script>
