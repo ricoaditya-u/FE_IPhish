@@ -187,6 +187,9 @@ const eventTitle = ref('')
 const eventLevel = ref('')
 const events = ref([])
 
+// Messages
+const feedbackMessage = ref('')
+
 // Tambahkan ref untuk input member
 const groupName = ref('')
 const firstName = ref('')
@@ -287,4 +290,166 @@ function editGroup(group) {
 function deleteGroup(id) {
     groups.value = groups.value.filter(g => g.id !== id)
 }
+
+const getGroups = async () => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const response = await axios.get('/api/groups/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        datas.value = response.data
+    } catch (error) {
+        console.error('Failed to fetch groups', error)
+    }
+}
+
+const getGroupById = async (id) => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const response = await axios.get(`/api/groups/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        datas.value = response.data
+    } catch (error) {
+        console.error('Failed to fetch group by ID', error)
+    }
+}
+
+const getGroupSummary = async () => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const response = await axios.get('/api/groups/summary', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        datas.value = response.data
+    } catch (error) {
+        console.error('Failed to fetch group summary', error)
+    }
+}
+
+const getGroupSummaryById = async (id) => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const response = await axios.get(`/api/groups/${id}/summary`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        datas.value = response.data
+    } catch (error) {
+        console.error('Failed to fetch group summary by ID', error)
+    }
+}
+
+const saveGroup = async () => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const body = {
+            id: selectedEvent.value?.id || Date.now(),
+            name: groupName.value,
+            modified_date: new Date().toISOString(),
+            targets: [
+                // Map groups to the expected target format
+                ...groups.value.map(g => ({
+                    firstName: g.firstName,
+                    lastName: g.lastName,
+                    email: g.email,
+                    position: g.position,
+                }))
+            ]
+        }
+        await axios.post('/api/groups/', body, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+
+        feedbackMessage.value = 'Create group successfully'
+        await getGroups() // Refresh the groups list
+        
+    } catch (error) {
+        errorMessage.value = 'Failed to create group'
+        console.error('Failed to create group:', error)
+    }
+}
+
+const updateGroup = async (id) => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const body = {
+            id: id,
+            name: groupName.value,
+            modified_date: new Date().toISOString(),
+            targets: [
+                // Map groups to the expected target format
+                ...groups.value.map(g => ({
+                    firstName: g.firstName,
+                    lastName: g.lastName,
+                    email: g.email,
+                    position: g.position,
+                }))
+            ]
+        }
+        await axios.put(`/api/groups/${id}`, body, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        feedbackMessage.value = 'Update group successfully'
+        await getGroups() // Refresh the groups list
+    } catch (error) {
+        errorMessage.value = 'Failed to update group'
+        console.error('Failed to update group:', error)
+    }
+}
+
+const deleteGroupById = async (id) => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        await axios.delete(`/api/groups/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        feedbackMessage.value = 'Delete group successfully'
+        await getGroups() // Refresh the groups list
+    } catch (error) {
+        errorMessage.value = 'Failed to delete group'
+        console.error('Failed to delete group:', error)
+    }
+}
+
+const importGroups = async (file) => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const formData = new FormData()
+        formData.append('file', file)
+
+        await axios.post('/api/import/group', formData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        feedbackMessage.value = 'Import groups successfully'
+        await getGroups() // Refresh the groups list
+    } catch (error) {
+        errorMessage.value = 'Failed to import groups'
+        console.error('Failed to import groups:', error)
+    }
+}
+
 </script>
