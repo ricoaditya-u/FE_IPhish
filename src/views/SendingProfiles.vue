@@ -276,44 +276,53 @@
             </template>
         </Modal>
     </AdminLayout>
-    </template>
+</template>
 
-    <script setup>
-    import {
-        SendIcon,
-    } from "../icons";
-    import AdminLayout from '@/components/layout/AdminLayout.vue'
-    import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue'
+<script setup>
+import {
+    SendIcon,
+} from "../icons";
+import AdminLayout from '@/components/layout/AdminLayout.vue'
+import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue'
 
-    const currentPageTitle = ref('Sending Profiles')
-    import { ref, reactive, onMounted } from 'vue'
-    import FullCalendar from '@fullcalendar/vue3'
-    import dayGridPlugin from '@fullcalendar/daygrid'
-    import timeGridPlugin from '@fullcalendar/timegrid'
-    import interactionPlugin from '@fullcalendar/interaction'
-    import Modal from '@/components/profile/Modal.vue'
-    import SendingProfilesTable from '../components/sendingprofiles/SendingProfilesTable.vue'
-    import AlertTips from '../components/ui/AlertTips.vue'
+const currentPageTitle = ref('Sending Profiles')
+import { ref, reactive, onMounted } from 'vue'
+import FullCalendar from '@fullcalendar/vue3'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import Modal from '@/components/profile/Modal.vue'
+import SendingProfilesTable from '../components/sendingprofiles/SendingProfilesTable.vue'
+import AlertTips from '../components/ui/AlertTips.vue'
 import { groupIntersectingEntries } from '@fullcalendar/core/internal'
 
-    const checkboxOne = ref(false)
-    const isOpen = ref(false)
-    const isOpen2 = ref(false)
-    const selectedEvent = ref(null)
-    const eventTitle = ref('')
-    const eventStartDate = ref('')
-    const eventEndDate = ref('')
-    const eventLevel = ref('')
-    const events = ref([])
-    const emailTemplate = ref('')
-    const landingPage = ref('')
+const checkboxOne = ref(false)
+const isOpen = ref(false)
+const isOpen2 = ref(false)
+const selectedEvent = ref(null)
+const eventTitle = ref('')
+const eventStartDate = ref('')
+const eventEndDate = ref('')
+const eventLevel = ref('')
+const events = ref([])
+const emailTemplate = ref('')
+const landingPage = ref('')
 
-    const calendarsEvents = reactive({
-        Danger: 'danger',
-        Success: 'success',
-        Primary: 'primary',
-        Warning: 'warning',
-    })
+const profileName = ref('')
+const interfaceType = ref('')
+const SMTPFrom = ref('')
+const host = ref('')
+const username = ref('')
+const password = ref('')
+const xCustomHeader = ref('')
+const group = ref('')
+
+const calendarsEvents = reactive({
+    Danger: 'danger',
+    Success: 'success',
+    Primary: 'primary',
+    Warning: 'warning',
+})
 
     // Dummy data, ganti dengan data asli jika ada
     const emailTemplates = ref([
@@ -462,4 +471,111 @@ import { groupIntersectingEntries } from '@fullcalendar/core/internal'
     //     },
     // },
     })
+
+
+const getAllSendingProfiles = async () => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const response = await axios.get('/api/smtp/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        datas.value = response.data
+    } catch (error) {
+        console.error('Failed to fetch SMTP profile', error)
+    }
+}
+
+const getSendingProfileById = async (id) => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const response = await axios.get(`/api/smtp/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        return response.data
+    } catch (error) {
+        console.error('Failed to fetch SMTP profile by ID', error)
+        return null
+    }
+}
+
+const saveSendingProfile = async (profile) => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const body = {
+            name: profileName.value,
+            interface_type: interfaceType.value,
+            from_address: SMTPFrom.value,
+            host: host.value,
+            username: username.value,
+            password: password.value,
+            ignore_cert_errors: checkboxOne.value,
+            modified_date: new Date().toISOString(),
+            headers: [
+                { key: 'X-Header', value: xCustomHeader.value }
+            ]
+
+        }
+        const response = await axios.post('/api/smtp/', body, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        return response.data
+    } catch (error) {
+        console.error('Failed to save SMTP profile', error)
+        return null
+    }
+}
+
+const updateSendingProfile = async (id, profile) => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const body = {
+            name: profileName.value,
+            interface_type: interfaceType.value,
+            from_address: SMTPFrom.value,
+            host: host.value,
+            username: username.value,
+            password: password.value,
+            ignore_cert_errors: checkboxOne.value,
+            modified_date: new Date().toISOString(),
+            headers: [
+                { key: 'X-Header', value: xCustomHeader.value }
+            ]
+        }
+        const response = await axios.put(`/api/smtp/${id}`, body, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        return response.data
+    } catch (error) {
+        console.error('Failed to update SMTP profile', error)
+        return null
+    }
+}
+
+const deleteSendingProfile = async (id) => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        await axios.delete(`/api/smtp/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        return true
+    } catch (error) {
+        console.error('Failed to delete SMTP profile', error)
+        return false
+    }
+}
 </script>
