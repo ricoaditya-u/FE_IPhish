@@ -158,7 +158,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-6">
+                    <!-- <div class="mt-6">
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                         Groups
                         </label>
@@ -171,7 +171,7 @@
                                 {{ template.name }}
                             </option>
                         </select>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="flex items-center gap-3 mt-6 modal-footer sm:justify-end">
                     <button
@@ -185,7 +185,7 @@
                         @click="handleAddOrUpdateEvent"
                         class="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
                     >
-                        {{ selectedEvent ? 'Update Changes' : 'Launch Campaign' }}
+                        {{ selectedEvent ? 'Update Profile' : 'Save Profile' }}
                     </button>
                     <button
                         v-if="selectedEvent"
@@ -297,17 +297,18 @@ import AlertTips from '../components/ui/AlertTips.vue'
 import { groupIntersectingEntries } from '@fullcalendar/core/internal'
 
 const checkboxOne = ref(false)
-const isOpen = ref(false)
-const isOpen2 = ref(false)
-const selectedEvent = ref(null)
-const eventTitle = ref('')
-const eventStartDate = ref('')
-const eventEndDate = ref('')
-const eventLevel = ref('')
-const events = ref([])
-const emailTemplate = ref('')
-const landingPage = ref('')
+// const isOpen = ref(false)
+// const isOpen2 = ref(false)
+// const selectedEvent = ref(null)
+// const eventTitle = ref('')
+// const eventStartDate = ref('')
+// const eventEndDate = ref('')
+// const eventLevel = ref('')
+// const events = ref([])
+// const emailTemplate = ref('')
+// const landingPage = ref('')
 
+const id = ref(null)
 const profileName = ref('')
 const interfaceType = ref('')
 const SMTPFrom = ref('')
@@ -317,128 +318,106 @@ const password = ref('')
 const xCustomHeader = ref('')
 const group = ref('')
 
-const calendarsEvents = reactive({
-    Danger: 'danger',
-    Success: 'success',
-    Primary: 'primary',
-    Warning: 'warning',
+// const calendarsEvents = reactive({
+//     Danger: 'danger',
+//     Success: 'success',
+//     Primary: 'primary',
+//     Warning: 'warning',
+// })
+
+//     // Dummy data, ganti dengan data asli jika ada
+//     const emailTemplates = ref([
+//     { id: 1, name: 'Welcome Email' },
+//     { id: 2, name: 'Phishing Alert' },
+//     { id: 3, name: 'Security Update' },
+//     ])
+//     const landingPages = ref([
+//     { id: 1, name: 'Login Page' },
+//     { id: 2, name: 'Survey Page' },
+//     { id: 3, name: 'Download Page' },
+//     ])
+
+onMounted(() => {
+    getAllSendingProfiles()
 })
 
-    // Dummy data, ganti dengan data asli jika ada
-    const emailTemplates = ref([
-    { id: 1, name: 'Welcome Email' },
-    { id: 2, name: 'Phishing Alert' },
-    { id: 3, name: 'Security Update' },
-    ])
-    const landingPages = ref([
-    { id: 1, name: 'Login Page' },
-    { id: 2, name: 'Survey Page' },
-    { id: 3, name: 'Download Page' },
-    ])
-
-    onMounted(() => {
-    events.value = [
-        {
-        id: '1',
-        title: 'Event Conf.',
-        start: new Date().toISOString().split('T')[0],
-        extendedProps: { calendar: 'Danger' },
-        },
-        {
-        id: '2',
-        title: 'Meeting',
-        start: new Date(Date.now() + 86400000).toISOString().split('T')[0],
-        extendedProps: { calendar: 'Success' },
-        },
-        {
-        id: '3',
-        title: 'Workshop',
-        start: new Date(Date.now() + 172800000).toISOString().split('T')[0],
-        end: new Date(Date.now() + 259200000).toISOString().split('T')[0],
-        extendedProps: { calendar: 'Primary' },
-        },
-    ]
-    })
-
-    const openModal = () => {
+const openModal = () => {
     isOpen.value = true
-    }
+}
 
-    const openModal2 = () => {
+const openModal2 = () => {
     isOpen2.value = true
-    }
+}
 
-    const closeModal = () => {
+const closeModal = () => {
     isOpen.value = false
     resetModalFields()
-    }
+}
 
-    const closeModal2 = () => {
+const closeModal2 = () => {
     isOpen2.value = false
-    resetModalFields()
-    }
+    resetModalFields2()
+}
 
-    const resetModalFields = () => {
-    eventTitle.value = ''
-    eventStartDate.value = ''
-    eventEndDate.value = ''
-    eventLevel.value = ''
-    selectedEvent.value = null
-    }
+const resetModalFields = () => {
+    profileName.value = ''
+    interfaceType.value = ''
+    SMTPFrom.value = ''
+    host.value = ''
+    username.value = ''
+    password.value = ''
+    checkboxOne.value = false
+    xCustomHeader.value = ''
+}
 
-    const handleDateSelect = (selectInfo) => {
-    resetModalFields()
-    eventStartDate.value = selectInfo.startStr
-    eventEndDate.value = selectInfo.endStr || selectInfo.startStr
-    openModal()
-    }
+const resetModalFields2 = () => {
+    firstName.value = ''
+    lastName.value = ''
+    email.value = ''
+    position.value = ''
+}
 
-    const handleEventClick = (clickInfo) => {
-    const event = clickInfo.event
-    selectedEvent.value = event
-    eventTitle.value = event.title
-    eventStartDate.value = event.start?.toISOString().split('T')[0] || ''
-    eventEndDate.value = event.end?.toISOString().split('T')[0] || ''
-    eventLevel.value = event.extendedProps.calendar
-    openModal()
-    }
+// const handleDateSelect = (selectInfo) => {
+//     resetModalFields()
+//     eventStartDate.value = selectInfo.startStr
+//     eventEndDate.value = selectInfo.endStr || selectInfo.startStr
+//     openModal()
+// }
 
-    const handleAddOrUpdateEvent = () => {
+// const handleEventClick = (clickInfo) => {
+//     const event = clickInfo.event
+//     selectedEvent.value = event
+//     eventTitle.value = event.title
+//     eventStartDate.value = event.start?.toISOString().split('T')[0] || ''
+//     eventEndDate.value = event.end?.toISOString().split('T')[0] || ''
+//     eventLevel.value = event.extendedProps.calendar
+//     openModal()
+// }
+
+const handleAddOrUpdateEvent = () => {
     if (selectedEvent.value) {
         // Update existing event
-        events.value = events.value.map((event) =>
-        event.id === selectedEvent.value.id
-            ? {
-                ...event,
-                title: eventTitle.value,
-                start: eventStartDate.value,
-                end: eventEndDate.value,
-                extendedProps: { calendar: eventLevel.value },
-            }
-            : event,
-        )
+        updateSendingProfile()
     } else {
         // Add new event
-        const newEvent = {
-        id: Date.now().toString(),
-        title: eventTitle.value,
-        start: eventStartDate.value,
-        end: eventEndDate.value,
-        allDay: true,
-        extendedProps: { calendar: eventLevel.value },
-        }
-        events.value.push(newEvent)
+        saveSendingProfile()
     }
     closeModal()
-    }
-    const handleDeleteEvent = () => {
+}
+
+const handleDeleteEvent = () => {
     if (selectedEvent.value) {
-        events.value = events.value.filter((event) => event.id !== selectedEvent.value.id)
+        deleteSendingProfile()
         closeModal()
     }
-    }
+}
 
-    const renderEventContent = (eventInfo) => {
+const testSendEmail = () => {
+    sendTestEmail()
+    closeModal2()
+}
+
+const renderEventContent = (eventInfo) => {
     const colorClass = `fc-bg-${eventInfo.event.extendedProps.calendar.toLowerCase()}`
     return {
         html: `
@@ -470,7 +449,7 @@ const calendarsEvents = reactive({
     //     click: openModal,
     //     },
     // },
-    })
+})
 
 
 const getAllSendingProfiles = async () => {
@@ -488,10 +467,10 @@ const getAllSendingProfiles = async () => {
     }
 }
 
-const getSendingProfileById = async (id) => {
+const getSendingProfileById = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/smtp/${id}`, {
+        const response = await axios.get(`/api/smtp/${id.value}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -504,7 +483,7 @@ const getSendingProfileById = async (id) => {
     }
 }
 
-const saveSendingProfile = async (profile) => {
+const saveSendingProfile = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
         const body = {
@@ -534,10 +513,11 @@ const saveSendingProfile = async (profile) => {
     }
 }
 
-const updateSendingProfile = async (id, profile) => {
+const updateSendingProfile = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
         const body = {
+            id: id.value,
             name: profileName.value,
             interface_type: interfaceType.value,
             from_address: SMTPFrom.value,
@@ -550,7 +530,7 @@ const updateSendingProfile = async (id, profile) => {
                 { key: 'X-Header', value: xCustomHeader.value }
             ]
         }
-        const response = await axios.put(`/api/smtp/${id}`, body, {
+        const response = await axios.put(`/api/smtp/${id.value}`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -563,10 +543,10 @@ const updateSendingProfile = async (id, profile) => {
     }
 }
 
-const deleteSendingProfile = async (id) => {
+const deleteSendingProfile = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/smtp/${id}`, {
+        await axios.delete(`/api/smtp/${id.value}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -576,6 +556,38 @@ const deleteSendingProfile = async (id) => {
     } catch (error) {
         console.error('Failed to delete SMTP profile', error)
         return false
+    }
+}
+
+const sendTestEmail = async () => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const body = {
+            first_name: firstName.value,
+            last_name: lastName.value,
+            email: email.value,
+            position: position.value,
+            smtp:{
+                from_address: SMTPFrom.value,
+                host: host.value,
+                username: username.value,
+                password: password.value,
+                ignore_cert_errors: checkboxOne.value,
+                headers: [
+                    { key: 'X-Header', value: xCustomHeader.value }
+                ]
+            }
+        }
+        const response = await axios.post('/util/send_test_email', body, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        return response.data
+    } catch (error) {
+        console.error('Failed to send test email', error)
+        return null
     }
 }
 </script>
