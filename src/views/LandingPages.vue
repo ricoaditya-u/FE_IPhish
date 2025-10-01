@@ -94,11 +94,11 @@
                             Capture Submitted Data
                             </label>
                         </div>
-                        <AlertTips class="mt-3"
+                        <!-- <AlertTips class="mt-3"
                         variant="info"
                         title="Tips"
                         message="If the landing page contains a form, submitted input (except passwords) will be captured."
-                        :showLink="false" />
+                        :showLink="false" /> -->
                         <!-- ...existing code... -->
                         <!-- Checkbox capture_passwords -->
                         <div v-if="selectedEvent">
@@ -160,12 +160,12 @@
                             :showLink="false" />
                         </div>
                         <TipsAI class="mt-3"
-                            v-model="generateLandingAI"
+                            v-model="generateAI"
                             variant="success"
-                            title="Info"
+                            title="Gunakan AI untuk membuat landing page anda secara otomatis"
                             message="Bingung mau buat landing page apa? Gunakan fitur AI untuk membuat landing page secara otomatis."
                         :showLink="false" />
-                        <div class="mt-6 flex flex-col gap-4 sm:flex-row" v-if="generateLandingAI">
+                        <div class="mt-4 flex flex-col gap-4 sm:flex-row" v-if="generateAI">
                             <div class="w-full">
                                 <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                 Instruksi ke AI / Prompt AI
@@ -250,7 +250,7 @@ const redirect_url = ref('')
 const capture_credentials = ref(false)
 const capture_passwords = ref(false)
 const promptAI = ref('')
-const generateLandingAI = ref(false)
+const generateAI = ref(false)
 
 // Messages
 const errorMessage = ref(null)

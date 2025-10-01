@@ -3,11 +3,11 @@
         <div class="flex items-start gap-3">
             <!-- Default Checkbox -->
             <div :class="['-mt-0.5', variantClasses[variant].icon]">
-                <input type="checkbox" id="generateAI" v-model="localValue" class="sr-only" />
+                <input type="checkbox" id="htmlTemplate" v-model="localValue" class="sr-only" />
             </div>
             <div>
                 <label
-                for="generateAI"
+                for="htmlTemplate"
                 class="flex items-center text-sm font-medium text-gray-700 cursor-pointer select-none dark:text-gray-400"
                 >
                     <div class="relative">
