@@ -2,6 +2,11 @@
     <admin-layout>
         <PageBreadcrumb :pageTitle="currentPageTitle" />
 
+        <div v-if="feedbackMessage" class="mb-4 mt-4">
+            <div class="rounded bg-success-100 text-black-700 px-4 py-2 text-sm">
+                {{ feedbackMessage }}
+            </div>
+        </div>
         <div class="grid grid-cols-12 gap-4 md:gap-6 mt-6">
             <div class="col-span-12">
                 <button
@@ -12,7 +17,7 @@
                 </button>
             </div>
             <div class="col-span-12">
-                <UsersAndGroupsTable @edit="editGroup" @delete="deleteGroup" />
+                <UsersAndGroupsTable :datas="datas" @edit="editData" @delete="handleDeleteEvent" />
             </div>
         </div>
 
@@ -127,8 +132,8 @@
                                 </thead>
                                 <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
                                     <tr v-for="group in groups" :key="group.id">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ group.firstName }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ group.lastName }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ group.first_name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ group.last_name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ group.email }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ group.position }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
@@ -157,13 +162,6 @@
                     >
                         {{ selectedEvent ? 'Update Changes' : 'Create Group' }}
                     </button>
-                    <button
-                        v-if="selectedEvent"
-                        @click="handleDeleteEvent"
-                        class="flex w-full justify-center rounded-lg border border-error-500 bg-error-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-error-600 sm:w-auto"
-                    >
-                        Delete Event
-                    </button>
                 </div>
             </div>
             </template>
@@ -176,16 +174,16 @@ import AdminLayout from '../components/layout/AdminLayout.vue'
 import UsersAndGroupsTable from '../components/usersngroups/UsersAndGroupsTable.vue'
 import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue'
 import Modal from '@/components/profile/Modal.vue'
-import Button from '@/components/ui/Button.vue'
+import axios from 'axios'
 
 const currentPageTitle = ref('Users & Groups')
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const isOpen = ref(false)
 const selectedEvent = ref(null)
 const eventTitle = ref('')
 const eventLevel = ref('')
-const events = ref([])
+const datas = ref([])
 
 // Messages
 const feedbackMessage = ref('')
@@ -209,46 +207,62 @@ const closeModal = () => {
 }
 
 const resetModalFields = () => {
-eventTitle.value = ''
-eventLevel.value = ''
-selectedEvent.value = null
+    eventTitle.value = ''
+    eventLevel.value = ''
+    selectedEvent.value = null
+    groupName.value = ''
+    groups.value = []
+    firstName.value = ''
+    lastName.value = ''
+    email.value = ''
+    position.value = ''
+    errorMessage.value = ''
 }
 
-const handleAddOrUpdateEvent = () => {
+const editData = async (data) => {
+    selectedEvent.value = data
+    groupName.value = data.name
+    
+    // Load group members/targets
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const response = await axios.get(`/api/groups/${data.id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        
+        // Set the groups data to display in the modal table
+        groups.value = response.data.targets || []
+        
+    } catch (error) {
+        console.error('Failed to fetch group details', error)
+        errorMessage.value = 'Failed to load group details'
+    }
+    
+    isOpen.value = true
+}
+
+const handleAddOrUpdateEvent = async () => {
     if (selectedEvent.value) {
         // Update existing event
-        events.value = events.value.map((event) =>
-        event.id === selectedEvent.value.id
-            ? {
-                ...event,
-                title: eventTitle.value,
-                start: eventStartDate.value,
-                end: eventEndDate.value,
-                extendedProps: { calendar: eventLevel.value },
-            }
-            : event,
-        )
+        await updateGroup(selectedEvent.value.id)
     } else {
         // Add new event
-        const newEvent = {
-        id: Date.now().toString(),
-        title: eventTitle.value,
-        start: eventStartDate.value,
-        end: eventEndDate.value,
-        allDay: true,
-        extendedProps: { calendar: eventLevel.value },
-        }
-        events.value.push(newEvent)
+        await saveGroup()
     }
     closeModal()
-    }
+}
 
-    const handleDeleteEvent = () => {
-        if (selectedEvent.value) {
-            events.value = events.value.filter((event) => event.id !== selectedEvent.value.id)
-            closeModal()
-        }
+const handleDeleteEvent = async (data) => {
+    try {
+        await deleteGroupById(data.id)
+        closeModal()
+    } catch (error) {
+        console.error('Failed to delete group', error)
     }
+}
 
 // Fungsi untuk menambah member ke tabel modal
 function addMember() {
@@ -280,7 +294,7 @@ function addMember() {
     position.value = '';
 }
 
-function editGroup(group) {
+function edit(group) {
     selectedEvent.value = group
     groupName.value = group.name
     // ...set other fields if needed...
@@ -289,6 +303,21 @@ function editGroup(group) {
 
 function deleteGroup(id) {
     groups.value = groups.value.filter(g => g.id !== id)
+}
+
+const fetchPages = async () => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const response = await axios.get('/api/groups/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+        datas.value = response.data
+    } catch (error) {
+        console.error('Failed to fetch groups', error)
+    }
 }
 
 const getGroups = async () => {
@@ -305,6 +334,10 @@ const getGroups = async () => {
         console.error('Failed to fetch groups', error)
     }
 }
+
+onMounted(() => {
+    fetchPages()
+})
 
 const getGroupById = async (id) => {
     try {

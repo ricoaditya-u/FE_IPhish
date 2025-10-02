@@ -1,4 +1,4 @@
-    <template>
+<template>
     <div
         class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
     >
@@ -86,7 +86,7 @@
                 <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ data.name }}</p>
                 </td>
                 <td class="py-3 whitespace-nowrap">
-                <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ data.of_members }}</p>
+                <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ data.targets.length }}</p>
                 </td>
                 <td class="py-3 whitespace-nowrap">
                 <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ data.modified_date }}</p>
@@ -100,7 +100,7 @@
                     </button>
                     <button
                         class="px-3 py-1 rounded bg-error-500 text-white text-xs hover:bg-error-600"
-                        @click="$emit('delete', data)"
+                        @click="confirmDelete(data)"
                     >
                         Delete
                     </button>
@@ -110,23 +110,33 @@
         </table>
         </div>
     </div>
-    </template>
+</template>
 
-    <script setup>
-    import { ref } from 'vue'
+<script setup>
+    import Swal from 'sweetalert2'
 
-    const datas = ref([
-    {
-        name: 'Initial Awareness Test',
-        of_members: 20,
-        modified_date: 'August 10th 2025, 11:47:56 pm',
-        status: 'In Progress',
-    },
-    {
-        name: 'New Employee Onboarding',
-        of_members: 10,
-        modified_date: 'August 11th 2025, 11:47:56 pm',
-        status: 'In Progress',
-    },
-    ])
-    </script>
+    const emit = defineEmits(['edit', 'delete'])
+    const props = defineProps({
+        datas: { type: Array, default: () => [] },
+    })
+
+    async function confirmDelete(data) {
+        const result = await Swal.fire({
+            title: 'Yakin mau hapus?',
+            text: 'Data ini akan hilang permanen!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6b7280',
+            reverseButtons: true,
+        })
+
+        if (result.isConfirmed) {
+            emit('delete', data)
+            // optional notifikasi sukses
+            Swal.fire({ icon: 'success', title: 'Terhapus', timer: 1200, showConfirmButton: false })
+        }
+    }
+</script>
