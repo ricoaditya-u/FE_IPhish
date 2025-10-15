@@ -8,30 +8,37 @@
         <ecommerce-metrics />
       </div>
       <div class="col-span-12">
-        <CampaignTable />
+        <DashboardTable :datas="datas" @edit="editData" @delete="handleDeleteEvent" />
       </div>
     </div>
   </admin-layout>
 </template>
 
-<script>
+<script setup>
 import AdminLayout from '../components/layout/AdminLayout.vue'
 import EcommerceMetrics from '../components/ecommerce/EcommerceMetrics.vue'
-import MonthlyTarget from '../components/ecommerce/MonthlySale.vue'
-import MonthlySale from '../components/ecommerce/MonthlyTarget.vue'
-import CustomerDemographic from '../components/ecommerce/CustomerDemographic.vue'
 import StatisticsChart from '../components/ecommerce/StatisticsChart.vue'
-import CampaignTable from '../components/campaign/CampaignTable.vue'
-export default {
-  components: {
-    AdminLayout,
-    EcommerceMetrics,
-    MonthlyTarget,
-    MonthlySale,
-    CustomerDemographic,
-    StatisticsChart,
-    CampaignTable,
-  },
-  name: 'Ecommerce',
+import DashboardTable from '../components/dashboard/DashboardTable.vue'
+import { ref, reactive, onMounted } from 'vue'
+import axios from 'axios'
+
+const datas = ref([])
+
+const fetchPages = async () => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const response = await axios.get('/api/campaigns/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        datas.value = response.data
+    } catch (error) {
+        console.error('Failed to fetch pages:', error)
+    }
 }
+
+onMounted(() => {
+    fetchPages()
+})
 </script>

@@ -371,6 +371,10 @@ const xCustomHeader = ref('')
 const datas = ref([])
 const errorMessage = ref('')
 const feedbackMessage = ref('')
+const firstName = ref('')
+const lastName = ref('')
+const email = ref('')
+const position = ref('')
 
 onMounted(() => {
     getAllSendingProfiles()

@@ -69,7 +69,16 @@
                             <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Created Date</p>
                         </th>
                         <th class="py-3 text-left">
-                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Status</p>
+                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Sent</p>
+                        </th>
+                        <th class="py-3 text-left">
+                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Opened</p>
+                        </th>
+                        <th class="py-3 text-left">
+                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Clicked</p>
+                        </th>
+                        <th class="py-3 text-left">
+                            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Submitted</p>
                         </th>
                         <th class="py-3 text-left">
                             <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Action</p>
@@ -83,21 +92,6 @@
                         </td>
                         <td class="py-3 whitespace-nowrap">
                             <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ data.created_date }}</p>
-                        </td>
-                        <td class="py-3 whitespace-nowrap">
-                            <span
-                                :class="{
-                                'rounded-full px-2 py-0.5 text-theme-xs font-medium': true,
-                                'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500':
-                                    data.status === 'Completed',
-                                'bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400':
-                                    data.status === 'In progress',
-                                'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500':
-                                    data.status === 'Canceled',
-                                }"
-                            >
-                                {{ data.status }}
-                            </span>
                         </td>
                         <td class="py-3 whitespace-nowrap">
                             <button

@@ -48,11 +48,19 @@
                         <div class="w-full sm:w-150">
                             <div class="flex gap-2">
                                 <button
-                                    @click="openModal2"
-                                    class="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-small text-white hover:bg-brand-600 sm:w-50"
-                                >
-                                    + Bulk Import Users
+                                    @click="triggerFileUpload"
+                                    :disabled="loading"
+                                    class="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-small text-white hover:bg-brand-600 sm:w-50">
+                                    <span v-if="!loading">+ Bulk Import Users</span>
+                                    <span v-else>Uploading...</span>
                                 </button>
+                                <!-- Input file tersembunyi -->
+                                <input
+                                type="file"
+                                ref="fileInput"
+                                class="hidden"
+                                @change="handleFileUpload"
+                                accept=".csv"/>
                                 <a href="" class="dark:text-white text-sm mt-3 ml-6">Download CSV Template</a>
                             </div>
                         </div>
@@ -63,7 +71,7 @@
                             First Name
                             </label>
                             <input
-                            v-model="firstName"
+                            v-model="first_name"
                             type="text"
                             class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                 />
@@ -73,7 +81,7 @@
                             Last Name
                             </label>
                             <input
-                                v-model="lastName"
+                                v-model="last_name"
                                 type="text"
                                 class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                                     />
@@ -184,18 +192,74 @@ const selectedEvent = ref(null)
 const eventTitle = ref('')
 const eventLevel = ref('')
 const datas = ref([])
+const fileInput = ref(null)
+const loading = ref(false)
 
 // Messages
 const feedbackMessage = ref('')
 
 // Tambahkan ref untuk input member
 const groupName = ref('')
-const firstName = ref('')
-const lastName = ref('')
+const first_name = ref('')
+const last_name = ref('')
 const email = ref('')
 const position = ref('')
 const groups = ref([])
 const errorMessage = ref('')
+
+// Ketika tombol diklik, buka dialog file
+const triggerFileUpload = () => {
+    fileInput.value.click()
+}
+
+// Tangani file setelah dipilih
+const handleFileUpload = async (event) => {
+    const file = event.target.files[0]
+    if (!file) return
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    loading.value = true
+
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        const response = await axios.post(
+            '/api/import/group',
+            formData,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Ganti dengan API key kamu
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        )
+
+        response.data.forEach((user, index) => {
+            // Validasi email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(user.email)) {
+                errorMessage.value = 'Please enter a valid email address!'
+                return;
+            }
+
+            groups.value.push({
+                id: Date.now(),
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email,
+                position: user.position,
+            });
+            // console.log(`User ${index + 1}: ${user.first_name} ${user.last_name} (${user.email})`)
+        })
+    } catch (error) {
+        console.error('Error upload:', error)
+        alert('Gagal mengupload file CSV.')
+    } finally {
+        loading.value = false
+        fileInput.value.value = '' // reset input
+    }
+}
 
 const openModal = () => {
     isOpen.value = true
@@ -212,8 +276,8 @@ const resetModalFields = () => {
     selectedEvent.value = null
     groupName.value = ''
     groups.value = []
-    firstName.value = ''
-    lastName.value = ''
+    first_name.value = ''
+    last_name.value = ''
     email.value = ''
     position.value = ''
     errorMessage.value = ''
@@ -267,7 +331,7 @@ const handleDeleteEvent = async (data) => {
 // Fungsi untuk menambah member ke tabel modal
 function addMember() {
     errorMessage.value = '' // Reset error message
-    if (!firstName.value || !lastName.value || !email.value || !position.value) {
+    if (!first_name.value || !last_name.value || !email.value || !position.value) {
         errorMessage.value = 'Please fill all fields!'
         return;
     }
@@ -281,15 +345,15 @@ function addMember() {
     
     groups.value.push({
         id: Date.now(),
-        firstName: firstName.value,
-        lastName: lastName.value,
+        first_name: first_name.value,
+        last_name: last_name.value,
         email: email.value,
         position: position.value,
     });
 
     // Reset input setelah tambah
-    firstName.value = '';
-    lastName.value = '';
+    first_name.value = '';
+    last_name.value = '';
     email.value = '';
     position.value = '';
 }
@@ -394,8 +458,8 @@ const saveGroup = async () => {
             targets: [
                 // Map groups to the expected target format
                 ...groups.value.map(g => ({
-                    firstName: g.firstName,
-                    lastName: g.lastName,
+                    first_name: g.first_name,
+                    last_name: g.last_name,
                     email: g.email,
                     position: g.position,
                 }))
@@ -427,8 +491,8 @@ const updateGroup = async (id) => {
             targets: [
                 // Map groups to the expected target format
                 ...groups.value.map(g => ({
-                    firstName: g.firstName,
-                    lastName: g.lastName,
+                    first_name: g.first_name,
+                    last_name: g.last_name,
                     email: g.email,
                     position: g.position,
                 }))

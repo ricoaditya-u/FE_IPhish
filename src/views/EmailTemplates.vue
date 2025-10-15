@@ -268,8 +268,8 @@ const savePage = async () => {
             name: templateName.value,
             envelope_sender: envelopeSender.value,
             subject: subject.value,
-            text: emailTextTemplate.value,
-            html: emailHtmlTemplate.value,
+            text: emailTextTemplate.value ?? " ",
+            html: emailHtmlTemplate.value ?? " ",
             modified_date: new Date().toISOString(),
             attachments: [],
         }
