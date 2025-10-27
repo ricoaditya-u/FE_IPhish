@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   iphish-fe:
     build:
@@ -19,7 +17,4 @@ services:
 
 networks:
   iphish-net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.22.0.0/16
+    external: true
