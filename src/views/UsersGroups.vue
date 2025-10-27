@@ -194,6 +194,7 @@ const eventLevel = ref('')
 const datas = ref([])
 const fileInput = ref(null)
 const loading = ref(false)
+const id = ref(null)
 
 // Messages
 const feedbackMessage = ref('')
@@ -452,7 +453,7 @@ const saveGroup = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
         const body = {
-            id: selectedEvent.value?.id || Date.now(),
+            id: id.value,
             name: groupName.value,
             modified_date: new Date().toISOString(),
             targets: [

@@ -4,7 +4,7 @@
   >
     <div class="flex flex-col gap-5 mb-6 sm:flex-row sm:justify-between">
       <div class="w-full">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Phising Success Overview</h3>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">Phising Result Overview</h3>
       </div>
 
       <div class="relative">
@@ -47,12 +47,12 @@ import VueApexCharts from 'vue3-apexcharts'
 
 const series = ref([
   {
-    name: 'Sales',
-    data: [180, 190, 170, 160, 175, 165, 170, 205, 230, 210, 240, 235],
+    name: 'Potential Breach',
+    data: [180, 190, 170, 160, 175, 165, 170, 160, 137, 117, 108, 95],
   },
   {
-    name: 'Revenue',
-    data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 140],
+    name: 'Human Security Awareness',
+    data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 155],
   },
 ])
 
@@ -62,7 +62,7 @@ const chartOptions = ref({
     position: 'top',
     horizontalAlign: 'left',
   },
-  colors: ['#465FFF', '#9CB9FF'],
+  colors: ['#FF0000', '#9CB9FF'],
   chart: {
     fontFamily: 'Outfit, sans-serif',
     type: 'area',
@@ -145,7 +145,7 @@ const chartOptions = ref({
 </script>
 
 <style scoped>
-.area-chart {
-  width: 100%;
-}
+  .area-chart {
+    width: 100%;
+  }
 </style>

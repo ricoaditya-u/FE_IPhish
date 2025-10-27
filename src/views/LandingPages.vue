@@ -242,6 +242,7 @@ import TextArea from "@/components/forms/FormElements/TextArea.vue";
 const isOpen = ref(false)
 const selectedEvent = ref(null)
 const datas = ref([])
+const id = ref(null)
 
 // Form Data
 const pageName = ref('')
@@ -310,7 +311,7 @@ const savePage = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
         const body = {
-            id: selectedEvent.value?.id || Date.now(),
+            id: id.value,
             name: pageName.value,
             html: landingPage.value,
             capture_credentials: capture_credentials.value,

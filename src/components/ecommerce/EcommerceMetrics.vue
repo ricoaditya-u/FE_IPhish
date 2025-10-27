@@ -26,13 +26,19 @@
       <div class="flex items-end justify-between mt-5">
         <div>
           <span class="text-sm text-gray-500 dark:text-gray-400">Email Sent</span>
-          <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">3,782</h4>
+          <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">{{ sent }}</h4>
         </div>
 
         <span
-          class="flex items-center gap-1 rounded-full bg-success-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500"
+          :class="[
+            'flex items-center gap-1 rounded-full py-0.5 pl-2 pr-2.5 text-sm font-medium',
+            sentPercentNumber >= 100
+              ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500'
+              : 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500'
+          ]"
+          id="precentage_sent"
         >
-          98%
+          {{ sentPercent }}
         </span>
       </div>
     </div>
@@ -63,13 +69,19 @@
       <div class="flex items-end justify-between mt-5">
         <div>
           <span class="text-sm text-gray-500 dark:text-gray-400">Email Opened</span>
-          <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">5,359</h4>
+          <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">{{ opened }}</h4>
         </div>
 
         <span
-          class="flex items-center gap-1 rounded-full bg-error-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-error-600 dark:bg-error-500/15 dark:text-error-500"
+          :class="[
+            'flex items-center gap-1 rounded-full py-0.5 pl-2 pr-2.5 text-sm font-medium',
+            openedPercentNumber >= 100
+              ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500'
+              : 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500'
+          ]"
+          id="precentage_opened"
         >
-          9.05%
+          {{ openedPercent }}
         </span>
       </div>
     </div>
@@ -101,13 +113,18 @@
       <div class="flex items-end justify-between mt-5">
         <div>
           <span class="text-sm text-gray-500 dark:text-gray-400">Clicked Link</span>
-          <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">3,782</h4>
+          <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">{{ clicked }}</h4>
         </div>
 
         <span
-          class="flex items-center gap-1 rounded-full bg-success-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500"
+          :class="[
+            'flex items-center gap-1 rounded-full py-0.5 pl-2 pr-2.5 text-sm font-medium',
+            clickedPercentNumber >= 100
+              ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500'
+              : 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500'
+          ]"
         >
-          11.01%
+          {{ clickedPercent }}
         </span>
       </div>
     </div>
@@ -138,15 +155,105 @@
       <div class="flex items-end justify-between mt-5">
         <div>
           <span class="text-sm text-gray-500 dark:text-gray-400">Submitted Data</span>
-          <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">3,782</h4>
+          <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">{{ submittedData }}</h4>
         </div>
 
         <span
-          class="flex items-center gap-1 rounded-full bg-success-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500"
+          :class="[
+            'flex items-center gap-1 rounded-full py-0.5 pl-2 pr-2.5 text-sm font-medium',
+            submitedPercentNumber >= 100
+              ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500'
+              : 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500'
+          ]"
         >
-          11.01%
+          {{ submitedPercent }}
         </span>
       </div>
     </div>
   </div>
 </template>
+<script setup>
+import { computed } from 'vue'
+
+// Accept summary data from parent (e.g., sent, opened, clicked, submitted counts)
+// Structure depends on API; parent just passes the raw object.
+// You can later replace the hardcoded numbers below to use fields from `summary`.
+// Example: const totalSent = computed(() => props.summary?.sent || 0)
+const props = defineProps({
+  summary: {
+    type: [Object, null],
+    default: null,
+  },
+})
+
+// Helpers to safely read nested stats
+const stats = computed(() => (props.summary && props.summary.stats) ? props.summary.stats : {})
+
+const sent = computed(() => stats.value.sent ?? 0)
+const opened = computed(() => stats.value.opened ?? 0)
+const clicked = computed(() => stats.value.clicked ?? 0)
+const submittedData = computed(() => stats.value.submitted_data ?? 0)
+
+// Percentage of sent over sent, formatted with two decimals and % sign
+const sentPercent = computed(() => {
+  const s = sent.value
+  if (!s || s <= 0) return '0%'
+  const pct = (s / s) * 100
+  return `${pct.toFixed(2)}%`
+})
+
+// Numeric version for class conditions
+const sentPercentNumber = computed(() => {
+  const s = sent.value
+  if (!s || s <= 0) return 0
+  return 100
+})
+
+// Percentage of opened over sent, formatted with two decimals and % sign
+const openedPercent = computed(() => {
+  const s = sent.value
+  const o = opened.value
+  if (!s || s <= 0) return '0%'
+  const pct = (o / s) * 100
+  return `${pct.toFixed(2)}%`
+})
+
+const openedPercentNumber = computed(() => {
+  const s = sent.value
+  const o = opened.value
+  if (!s || s <= 0) return 0
+  return (o / s) * 100
+})
+
+// Percentage of clicked over sent, formatted with two decimals and % sign
+const clickedPercent = computed(() => {
+  const o = opened.value
+  const c = clicked.value
+  if (!o || o <= 0) return '0%'
+  const pct = (c / o) * 100
+  return `${pct.toFixed(2)}%`
+})
+
+const clickedPercentNumber = computed(() => {
+  const o = opened.value
+  const c = clicked.value
+  if (!o || o <= 0) return 0
+  return (c / o) * 100
+})
+
+// Percentage of submitted over sent, formatted with two decimals and % sign
+const submitedPercent = computed(() => {
+  const c = clicked.value
+  const d = submittedData.value
+  if (!c || c <= 0) return '0%'
+  const pct = (d / c) * 100
+  return `${pct.toFixed(2)}%`
+})
+
+const submitedPercentNumber = computed(() => {
+  const c = clicked.value
+  const d = submittedData.value
+  if (!c || c <= 0) return 0
+  return (d / c) * 100
+})
+</script>

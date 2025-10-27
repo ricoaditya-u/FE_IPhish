@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  gophish-fe:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gophish-frontend
+    ports:
+      - "3000:80"  # Map port 80 container ke port 3000 host
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+

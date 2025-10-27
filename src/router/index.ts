@@ -7,7 +7,7 @@ const router = createRouter({
   },
   routes: [
     {
-      path: '/',
+      path: '/dashboard',
       name: 'Phising Dashboard',
       component: () => import('../views/Dashboard.vue'),
       meta: {
@@ -68,6 +68,14 @@ const router = createRouter({
       component: () => import('../views/AccountSettings.vue'),
       meta: {
         title: 'Account Settings',
+      },
+    },
+    {
+      path: '/details/campaign/:id',
+      name: 'Detail Campaign',
+      component: () => import('../views/DetailCampaign.vue'),
+      meta: {
+        title: 'Detail Campaign',
       },
     },
 

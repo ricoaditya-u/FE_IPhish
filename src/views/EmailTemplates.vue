@@ -195,7 +195,7 @@ const feedbackMessage = ref('')
 const templateName = ref('')
 const subject = ref('')
 const envelopeSender = ref('')
-const groups = ref([])
+const id = ref(null)
 const errorMessage = ref('')
 const promptAI = ref('')
 const emailHtmlTemplate = ref('')
@@ -264,7 +264,7 @@ const savePage = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
         const body = {
-            id: selectedEvent.value?.id || Date.now(),
+            id: id.value,
             name: templateName.value,
             envelope_sender: envelopeSender.value,
             subject: subject.value,

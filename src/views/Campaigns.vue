@@ -344,13 +344,12 @@ const feedbackMessage = ref('')
 
 const editData = (data) => {
     selectedEvent.value = data
-    campaignTitle.value = data.title || ''
-    launchDate.value = data.start ? data.start.split('T')[0] : ''
-    eventEndDate.value = data.end ? data.end.split('T')[0] : ''
-    eventLevel.value = data.extendedProps?.calendar || ''
-    isOpen.value = true
+    campaignTitle.value = data.name || ''
+    url.value = data.url || ''
+    launchDate.value = data.launch_date ? data.launch_date.split('T')[0] : ''
     errorMessage.value = '' // Clear error message
     feedbackMessage.value = '' // Clear feedback message
+    isOpen.value = true
     // Refresh semua data ketika modal dibuka
     fetchEmailTemplates()
     fetchLandingPages()
@@ -382,7 +381,6 @@ const fetchEmailTemplates = async () => {
             },
         })
         emailTemplates.value = response.data
-        console.log('Email templates loaded successfully:', response.data)
     } catch (error) {
         console.error('Failed to fetch email templates:', error)
         errorMessage.value = 'Failed to load email templates. Using default options.'
@@ -407,7 +405,6 @@ const fetchLandingPages = async () => {
             },
         })
         landingPages.value = response.data
-        console.log('Landing pages loaded successfully:', response.data)
     } catch (error) {
         console.error('Failed to fetch landing pages:', error)
         errorMessage.value = 'Failed to load landing pages. Using default options.'
@@ -431,8 +428,8 @@ const fetchSendingProfiles = async () => {
                 Authorization: `Bearer ${token}`,
             },
         })
+
         sendingProfiles.value = response.data
-        console.log('Sending profiles loaded successfully:', response.data)
     } catch (error) {
         console.error('Failed to fetch sending profiles:', error)
         errorMessage.value = 'Failed to load sending profiles. Using default options.'
@@ -457,7 +454,6 @@ const fetchGroups = async () => {
             },
         })
         groups.value = response.data
-        console.log('Groups loaded successfully:', response.data)
     } catch (error) {
         console.error('Failed to fetch groups:', error)
         errorMessage.value = 'Failed to load groups. Using default options.'
@@ -534,7 +530,6 @@ const createCampaign = async () => {
         console.log('Campaign created successfully:', response.data)
         feedbackMessage.value = 'Campaign created successfully!'
         return true
-
     } catch (error) {
         console.error('Failed to create campaign:', error)
         errorMessage.value = 'Failed to create campaign. Please check your inputs and try again.'
@@ -571,14 +566,13 @@ const updateCampaign = async (campaignId) => {
             errorMessage.value = 'URL is required'
             return false
         }
-        if (!launchDate.value) {
-            errorMessage.value = 'Launch date is required'
-            return false
-        }
+        // if (!launchDate.value) {
+        //     errorMessage.value = 'Launch date is required'
+        //     return false
+        // }
 
         // Format tanggal untuk API Gophish (ISO8601 format)
-        const launchDate = new Date(eventStartDate.value).toISOString()
-        const sendByDate = eventEndDate.value ? new Date(eventEndDate.value).toISOString() : null
+        const launchDateISO = new Date(launchDate.value).toISOString()
 
         // Struktur data sesuai dengan API Gophish
         const campaignData = {
@@ -588,13 +582,13 @@ const updateCampaign = async (campaignId) => {
             smtp: { name: sendingProfile.value },
             groups: [{ name: group.value }],
             url: url.value,
-            launch_date: launchDate,
-            send_by_date: sendByDate
+            launch_date: launchDateISO,
+            send_by_date: launchDateISO
         }
 
         console.log('Updating campaign with data:', campaignData)
 
-        const response = await axios.put(`/api/campaigns/${campaignId}`, campaignData, {
+        const response = await axios.post(`/api/campaigns/${campaignId}`, campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -604,7 +598,6 @@ const updateCampaign = async (campaignId) => {
         console.log('Campaign updated successfully:', response.data)
         feedbackMessage.value = 'Campaign updated successfully!'
         return true
-
     } catch (error) {
         console.error('Failed to update campaign:', error)
         errorMessage.value = 'Failed to update campaign. Please check your inputs and try again.'
@@ -627,7 +620,6 @@ const deleteCampaign = async (campaignId) => {
         console.log('Campaign deleted successfully:', response.data)
         feedbackMessage.value = 'Campaign deleted successfully!'
         return true
-
     } catch (error) {
         console.error('Failed to delete campaign:', error)
         errorMessage.value = 'Failed to delete campaign. Please try again.'
@@ -653,28 +645,6 @@ const getCampaignResults = async (campaignId) => {
     } catch (error) {
         console.error('Failed to fetch campaign results:', error)
         errorMessage.value = 'Failed to load campaign results.'
-        return null
-    }
-}
-
-const getCampaignSummary = async (campaignId) => {
-    try {
-        const token = import.meta.env.VITE_API_TOKEN
-        
-        console.log('Getting campaign summary for ID:', campaignId)
-
-        const response = await axios.get(`/api/campaigns/${campaignId}/summary`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-
-        console.log('Campaign summary loaded successfully:', response.data)
-        return response.data
-
-    } catch (error) {
-        console.error('Failed to fetch campaign summary:', error)
-        errorMessage.value = 'Failed to load campaign summary.'
         return null
     }
 }
@@ -874,19 +844,19 @@ const handleAddOrUpdateEvent = async () => {
     }
 }
 
-const handleDeleteEvent = async () => {
-    if (selectedEvent.value) {
-        const success = await deleteCampaign(selectedEvent.value.id)
-        
-        if (success) {
-            // Refresh data setelah campaign dihapus
-            await fetchPages()
-            await fetchEmailTemplates()
-            await fetchLandingPages()
-            await fetchSendingProfiles()
-            await fetchGroups()
-            closeModal()
-        }
+const handleDeleteEvent = async (data) => {
+    try {
+        const token = import.meta.env.VITE_API_TOKEN
+        await axios.delete(`/api/campaigns/${data.id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        feedbackMessage.value = 'Data deleted successfully'
+        await fetchPages()
+    } catch (error) {
+        feedbackMessage.value = 'Failed to delete data'
+        console.error(error)
     }
 }
 

@@ -102,9 +102,9 @@
                         <td class="py-3 whitespace-nowrap">
                             <button
                                 class="mr-2 px-3 py-1 rounded bg-brand-500 text-white text-xs hover:bg-brand-600"
-                                @click="$emit('edit', data)"
+                                @click="goToDetail(data)"
                             >
-                                Edit
+                                View
                             </button>
                             <button
                                 class="px-3 py-1 rounded bg-error-500 text-white text-xs hover:bg-error-600"
@@ -122,11 +122,17 @@
 
 <script setup>
 import Swal from 'sweetalert2'
+import { useRouter } from 'vue-router'
 
-const emit = defineEmits(['edit', 'delete'])
+const router = useRouter()
+const emit = defineEmits(['delete'])
 const props = defineProps({
     datas: { type: Array, default: () => [] },
 })
+
+function goToDetail(data) {
+    router.push(`/details/campaign/${data.id}`)
+}
 
 async function confirmDelete(data) {
     const result = await Swal.fire({

@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  gophish-fe:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gophish-frontend-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  app-network:
+    driver: bridge
+
