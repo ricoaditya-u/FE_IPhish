@@ -504,9 +504,7 @@ const createCampaign = async () => {
 
         // Format tanggal untuk API Gophish (ISO8601 format)
         const launchDateISO = new Date(launchDate.value).toISOString()
-        // const sendByDate = eventEndDate.value ? new Date(eventEndDate.value).toISOString() : null
-
-        // Struktur data sesuai dengan API Gophish
+        
         const campaignData = {
             name: campaignTitle.value,
             template: { name: emailTemplate.value },
@@ -518,14 +516,33 @@ const createCampaign = async () => {
             send_by_date: launchDateISO
         }
 
-        console.log('Creating campaign with data:', campaignData)
-
         const response = await axios.post('/api/campaigns/', campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         })
+
+        // Tambahkan event ke calendar setelah campaign berhasil dibuat
+        const calendarEvent = {
+            id: response.data.id,
+            title: campaignTitle.value,
+            start: launchDateISO,
+            end: launchDateISO,
+            extendedProps: {
+                calendar: 'Primary', // atau bisa disesuaikan dengan status campaign
+                description: `Email Template: ${emailTemplate.value}\nLanding Page: ${landingPage.value}`
+            }
+        }
+        
+        // Tambahkan event ke array events
+        events.value.push(calendarEvent)
+        
+        // Refresh calendar view
+        if (calendarRef.value) {
+            const calendar = calendarRef.value.getApi()
+            calendar.addEvent(calendarEvent)
+        }
 
         console.log('Campaign created successfully:', response.data)
         feedbackMessage.value = 'Campaign created successfully!'
@@ -686,6 +703,7 @@ onMounted(() => {
     fetchLandingPages()
     fetchSendingProfiles()
     fetchGroups()
+    loadCampaignEvents() // Tambahkan ini
 })
 
 // =========================================================================================================
@@ -893,4 +911,39 @@ eventContent: renderEventContent,
 //     },
 // },
 })
+
+const loadCampaignEvents = async () => {
+    try {
+        // Ambil data campaign yang sudah ada
+        const existingCampaigns = datas.value
+
+        // Reset events array
+        events.value = []
+
+        // Convert campaigns menjadi calendar events
+        existingCampaigns.forEach(campaign => {
+            const event = {
+                id: campaign.id,
+                title: campaign.name,
+                start: campaign.launch_date,
+                end: campaign.launch_date,
+                extendedProps: {
+                    calendar: campaign.status === 'Completed' ? 'Success' : 
+                             campaign.status === 'In progress' ? 'Primary' : 'Warning',
+                    description: `Status: ${campaign.status}`
+                }
+            }
+            events.value.push(event)
+        })
+
+        // Refresh calendar view
+        if (calendarRef.value) {
+            const calendar = calendarRef.value.getApi()
+            calendar.removeAllEvents()
+            events.value.forEach(event => calendar.addEvent(event))
+        }
+    } catch (error) {
+        console.error('Failed to load campaign events:', error)
+    }
+}
 </script>

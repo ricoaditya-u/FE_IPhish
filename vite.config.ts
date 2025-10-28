@@ -25,7 +25,7 @@ export default defineConfig({
         secure: false, // karena Gophish pakai self-signed cert
       },
       '/gateway-api': {
-        target: 'https://api.iphish.local',
+        target: 'https://api.iphish.local:8443',
         changeOrigin: true,
         secure: false, // karena Gophish pakai self-signed cert
       },
