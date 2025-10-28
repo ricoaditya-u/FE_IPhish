@@ -27,14 +27,28 @@
     </div>
     <div class="max-w-full overflow-x-auto custom-scrollbar">
       <div id="chartThree" class="-ml-4 min-w-[1000px] xl:min-w-full pl-2">
-        <VueApexCharts type="area" height="310" :options="chartOptions" :series="series" />
+        <VueApexCharts
+          type="area"
+          height="310"
+          :options="chartOptions"
+          :series="series"
+          :key="dataList.length"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
+import VueApexCharts from 'vue3-apexcharts'
+
+const props = defineProps({
+  dataCurvas: {
+    type: Object,
+    default: () => ({}),
+  },
+})
 
 const options = [
   { value: 'optionOne', label: 'Monthly' },
@@ -43,16 +57,28 @@ const options = [
 ]
 
 const selected = ref('optionOne')
-import VueApexCharts from 'vue3-apexcharts'
 
-const series = ref([
+// derived list from incoming prop
+const dataList = computed(() => props.dataCurvas?.data ?? [])
+
+// x-axis categories from name key
+const categories = computed(() => dataList.value.map((item: any) => item.name))
+
+console.log("x-axis:", categories.value)
+
+// series arrays from potential_breach and awareness_score
+const series = computed(() => [
   {
     name: 'Potential Breach',
-    data: [180, 190, 170, 160, 175, 165, 170, 160, 137, 117, 108, 95],
+    data: dataList.value.map((item: any) => {
+      const v = Number(item?.potential_breach ?? 0)
+      // convert to percentage and round 2 decimals
+      return Number((v * 100).toFixed(2))
+    }),
   },
   {
     name: 'Human Security Awareness',
-    data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 155],
+    data: dataList.value.map((item: any) => Number(item?.awareness_score ?? 0)),
   },
 ])
 
@@ -110,20 +136,7 @@ const chartOptions = ref({
   },
   xaxis: {
     type: 'category',
-    categories: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ],
+    categories: [],
     axisBorder: {
       show: false,
     },
@@ -141,6 +154,18 @@ const chartOptions = ref({
       },
     },
   },
+})
+
+// keep categories in chartOptions in sync when prop updates
+watch(categories, (newCats) => {
+  // replace xaxis with new categories to ensure reactivity
+  chartOptions.value = {
+    ...chartOptions.value,
+    xaxis: {
+      ...(chartOptions.value.xaxis || {}),
+      categories: newCats,
+    },
+  }
 })
 </script>
 

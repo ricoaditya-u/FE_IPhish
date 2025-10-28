@@ -55,7 +55,7 @@ const props = defineProps({
 })
 
 // // Helpers to safely read nested stats
-const potential_breach = (props.reportCampaign.data.potential_breach * 100).toFixed(2)
+const potential_breach = (props.reportCampaign.data.potential_breach * 100).toFixed(0)
 const awareness_score = props.reportCampaign.data.awareness_score
 // const opened = computed(() => stats.value.opened ?? 0)
 // const clicked = computed(() => stats.value.clicked ?? 0)

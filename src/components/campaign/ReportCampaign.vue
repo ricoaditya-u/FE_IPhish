@@ -23,7 +23,7 @@
                                 'bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-warning-500':
                                     awareness_status === 'waspada', 
                                 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500':
-                                    awareness_status === 'rentan'
+                                    awareness_status === 'rentan',
                             }"
                         >
                             {{ awareness_status || 'N/A' }}
