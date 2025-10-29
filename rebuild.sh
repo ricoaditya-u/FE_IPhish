@@ -41,3 +41,4 @@ docker-compose logs --tail=20
 echo ""
 echo "🌐 Access your app at: http://localhost:3000"
 
+

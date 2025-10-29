@@ -18,7 +18,7 @@ export default defineConfigWithVueTs(
     ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
   },
 
-  pluginVue.configs['flat/essential'],
+  // cast to any to work around type incompatibility between eslint and @typescript-eslint/utils
+  pluginVue.configs['flat/essential'] as any,
   vueTsConfigs.recommended,
-  skipFormatting,
 )

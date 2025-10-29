@@ -46,7 +46,7 @@ const deskripsi2 = ["Skor Potential Breach = (S + (C - S)*p) / N", "S: Jumlah su
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/campaigns/`, {
+        const response = await axios.get('/api/campaigns/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -60,7 +60,7 @@ const fetchPages = async () => {
 const getDataCurva = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_GATEWAY_API_URL}/gateway-api/campaigns/trend`, {
+        const response = await axios.get('/gateway-api/campaigns/trend', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -75,7 +75,7 @@ const getDataCurva = async () => {
 const getDataAverage = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_GATEWAY_API_URL}/gateway-api/campaigns/report/average`, {
+        const response = await axios.get('/gateway-api/campaigns/report/average', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -93,7 +93,6 @@ onMounted(async () => {
         await fetchPages()
         await getDataCurva()
         dataAverage.value = await getDataAverage()
-        // console.log("dataAverage: ", dataAverage.value.data.awareness_score)
 
         // Tunggu data terload dulu
         await nextTick()

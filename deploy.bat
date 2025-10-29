@@ -56,3 +56,4 @@ docker-compose -f %COMPOSE_FILE% ps
 
 pause
 
+

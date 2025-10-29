@@ -285,7 +285,7 @@ const editData = (data) => {
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/pages/`, {
+        const response = await axios.get('/api/pages/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -319,7 +319,7 @@ const savePage = async () => {
             redirect_url: "http://example.com",
             modified_date: new Date().toISOString(),
         }
-        await axios.post(`${import.meta.env.VITE_SERVICE_API_URL}/api/pages/`, body, {
+        await axios.post('/api/pages/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -346,7 +346,7 @@ const editPage = async (data) => {
             redirect_url: data.redirect_url,
             modified_date: new Date().toISOString(),
         }
-        await axios.put(`${import.meta.env.VITE_SERVICE_API_URL}/api/pages/${data.id}`, body, {
+        await axios.put(`/api/pages/${data.id}`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -368,7 +368,7 @@ onMounted(() => {
 const handleDeleteEvent = async (data) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`${import.meta.env.VITE_SERVICE_API_URL}/api/pages/${data.id}`, {
+        await axios.delete(`/api/pages/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
