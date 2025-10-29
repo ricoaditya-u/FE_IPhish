@@ -46,7 +46,7 @@ const deskripsi2 = ["Skor Potential Breach = (S + (C - S)*p) / N", "S: Jumlah su
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/campaigns/', {
+        const response = await axios.get('http://admin.gophish.local:3333/api/campaigns/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -60,7 +60,7 @@ const fetchPages = async () => {
 const getDataCurva = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/gateway-api/campaigns/trend', {
+        const response = await axios.get('https://api.iphish.local:8443/gateway-api/campaigns/trend', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -73,9 +73,9 @@ const getDataCurva = async () => {
 }
 
 const getDataAverage = async () => {
-  try {
+    try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/gateway-api/campaigns/report/average', {
+        const response = await axios.get('https://api.iphish.local:8443/gateway-api/campaigns/report/average', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

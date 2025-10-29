@@ -234,7 +234,7 @@ const editData = (data) => {
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/templates/', {
+        const response = await axios.get('http://admin.gophish.local:3333/api/templates/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -273,7 +273,7 @@ const savePage = async () => {
             modified_date: new Date().toISOString(),
             attachments: [],
         }
-        await axios.post('/api/templates/', body, {
+        await axios.post('http://admin.gophish.local:3333/api/templates/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -301,7 +301,7 @@ const editPage = async (data) => {
             modified_date: new Date().toISOString(),
             attachments: [],
         }
-        await axios.put(`/api/templates/${data.id}`, body, {
+        await axios.put(`http://admin.gophish.local:3333/api/templates/${data.id}`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -319,7 +319,7 @@ const editPage = async (data) => {
 const handleDeleteEvent = async (data) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/templates/${data.id}`, {
+        await axios.delete(`http://admin.gophish.local:3333/api/templates/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

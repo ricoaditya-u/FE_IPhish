@@ -60,7 +60,7 @@ const isLoading = ref(true)
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/campaigns/${campaignId}`, {
+        const response = await axios.get(`http://admin.gophish.local:3333/api/campaigns/${campaignId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -77,7 +77,7 @@ const getCampaignSummary = async (campaignId) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
 
-        const response = await axios.get(`/api/campaigns/${campaignId}/summary`, {
+        const response = await axios.get(`http://admin.gophish.local:3333/api/campaigns/${campaignId}/summary`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -111,7 +111,7 @@ const getReportCampaign = async () => {
             "email_reported": summary.value.stats.email_reported
         }
 
-        const response = await axios.post('/gateway-api/campaigns/report', campaignData, {
+        const response = await axios.post('https://api.iphish.local:8443/gateway-api/campaigns/report', campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -145,7 +145,7 @@ async function confirmCompleteCampaign(data) {
             
             console.log('Completing campaign for ID:', campaignId)
 
-            const response = await axios.get(`/api/campaigns/${campaignId}/complete`, {
+            const response = await axios.get(`http://admin.gophish.local:3333/api/campaigns/${campaignId}/complete`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

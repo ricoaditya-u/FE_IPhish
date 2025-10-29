@@ -226,7 +226,7 @@ const handleFileUpload = async (event) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
         const response = await axios.post(
-            '/api/import/group',
+            'http://admin.gophish.local:3333/api/import/group',
             formData,
             {
                 headers: {
@@ -291,7 +291,7 @@ const editData = async (data) => {
     // Load group members/targets
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/groups/${data.id}`, {
+        const response = await axios.get(`http://admin.gophish.local:3333/api/groups/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -373,7 +373,7 @@ function deleteGroup(id) {
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/groups/', {
+        const response = await axios.get('http://admin.gophish.local:3333/api/groups/', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -388,7 +388,7 @@ const fetchPages = async () => {
 const getGroups = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/groups/', {
+        const response = await axios.get('http://admin.gophish.local:3333/api/groups/', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -407,7 +407,7 @@ onMounted(() => {
 const getGroupById = async (id) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/groups/${id}`, {
+        const response = await axios.get(`http://admin.gophish.local:3333/api/groups/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -422,7 +422,7 @@ const getGroupById = async (id) => {
 const getGroupSummary = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/groups/summary', {
+        const response = await axios.get('http://admin.gophish.local:3333/api/groups/summary', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -437,7 +437,7 @@ const getGroupSummary = async () => {
 const getGroupSummaryById = async (id) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/groups/${id}/summary`, {
+        const response = await axios.get(`http://admin.gophish.local:3333/api/groups/${id}/summary`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -466,7 +466,7 @@ const saveGroup = async () => {
                 }))
             ]
         }
-        await axios.post('/api/groups/', body, {
+        await axios.post('http://admin.gophish.local:3333/api/groups/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -499,7 +499,7 @@ const updateGroup = async (id) => {
                 }))
             ]
         }
-        await axios.put(`/api/groups/${id}`, body, {
+        await axios.put(`http://admin.gophish.local:3333/api/groups/${id}`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -516,7 +516,7 @@ const updateGroup = async (id) => {
 const deleteGroupById = async (id) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/groups/${id}`, {
+        await axios.delete(`http://admin.gophish.local:3333/api/groups/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -536,7 +536,7 @@ const importGroups = async (file) => {
         const formData = new FormData()
         formData.append('file', file)
 
-        await axios.post('/api/import/group', formData, {
+        await axios.post('http://admin.gophish.local:3333/api/import/group', formData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',

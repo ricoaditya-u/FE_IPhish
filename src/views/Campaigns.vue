@@ -360,7 +360,7 @@ const editData = (data) => {
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/campaigns/', {
+        const response = await axios.get('http://admin.gophish.local:3333/api/campaigns/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -375,7 +375,7 @@ const fetchEmailTemplates = async () => {
     isLoadingTemplates.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/templates/', {
+        const response = await axios.get('http://admin.gophish.local:3333/api/templates/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -399,7 +399,7 @@ const fetchLandingPages = async () => {
     isLoadingLandingPages.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/pages/', {
+        const response = await axios.get('http://admin.gophish.local:3333/api/pages/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -423,7 +423,7 @@ const fetchSendingProfiles = async () => {
     isLoadingSendingProfiles.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/smtp/', {
+        const response = await axios.get('http://admin.gophish.local:3333/api/smtp/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -448,7 +448,7 @@ const fetchGroups = async () => {
     isLoadingGroups.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/groups/', {
+        const response = await axios.get('http://admin.gophish.local:3333/api/groups/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -516,7 +516,7 @@ const createCampaign = async () => {
             send_by_date: launchDateISO
         }
 
-        const response = await axios.post('/api/campaigns/', campaignData, {
+        const response = await axios.post('http://admin.gophish.local:3333/api/campaigns/', campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -605,7 +605,7 @@ const updateCampaign = async (campaignId) => {
 
         console.log('Updating campaign with data:', campaignData)
 
-        const response = await axios.post(`/api/campaigns/${campaignId}`, campaignData, {
+        const response = await axios.post(`http://admin.gophish.local:3333/api/campaigns/${campaignId}`, campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -628,7 +628,7 @@ const deleteCampaign = async (campaignId) => {
         
         console.log('Deleting campaign with ID:', campaignId)
 
-        const response = await axios.delete(`/api/campaigns/${campaignId}`, {
+        const response = await axios.delete(`http://admin.gophish.local:3333/api/campaigns/${campaignId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -650,7 +650,7 @@ const getCampaignResults = async (campaignId) => {
         
         console.log('Getting campaign results for ID:', campaignId)
 
-        const response = await axios.get(`/api/campaigns/${campaignId}/results`, {
+        const response = await axios.get(`http://admin.gophish.local:3333/api/campaigns/${campaignId}/results`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -672,7 +672,7 @@ const completeCampaign = async (campaignId) => {
         
         console.log('Completing campaign with ID:', campaignId)
 
-        const response = await axios.get(`/api/campaigns/${campaignId}/complete`, {
+        const response = await axios.get(`http://admin.gophish.local:3333/api/campaigns/${campaignId}/complete`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -865,7 +865,7 @@ const handleAddOrUpdateEvent = async () => {
 const handleDeleteEvent = async (data) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/campaigns/${data.id}`, {
+        await axios.delete(`http://admin.gophish.local:3333/api/campaigns/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
