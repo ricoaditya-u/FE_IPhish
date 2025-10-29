@@ -4,6 +4,14 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: iphish-frontend
+    environment:
+      VITE_API_TOKEN: ${VITE_API_TOKEN}
+      VITE_API_KEY_MODELARK: ${VITE_API_KEY_MODELARK}
+      WEB_BYTE_PLUSE: ${WEB_BYTE_PLUSE}
+      API_KEY_BYTEPLUSE: ${API_KEY_BYTEPLUSE}
+      MODEL_TEXT: ${MODEL_TEXT}
+      VITE_SERVICE_API_URL: ${VITE_SERVICE_API_URL}
+      VITE_GATEWAY_API_URL: ${VITE_GATEWAY_API_URL}
     ports:
       - "80:80"
       - "443:443"
