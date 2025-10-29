@@ -468,7 +468,7 @@ const renderEventContent = (eventInfo) => {
 const getAllSendingProfiles = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/smtp/`, {
+        const response = await axios.get('/api/smtp/', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -483,7 +483,7 @@ const getAllSendingProfiles = async () => {
 const getSendingProfileById = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/smtp/${id.value}`, {
+        const response = await axios.get(`/api/smtp/${id.value}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -514,7 +514,7 @@ const saveSendingProfile = async () => {
 
         }
 
-        const response = await axios.post(`${import.meta.env.VITE_SERVICE_API_URL}/api/smtp/`, body, {
+        const response = await axios.post('/api/smtp/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -547,7 +547,7 @@ const updateSendingProfile = async () => {
             ]
         }
 
-        const response = await axios.put(`${import.meta.env.VITE_SERVICE_API_URL}/api/smtp/${id.value}`, body, {
+        const response = await axios.put(`/api/smtp/${id.value}`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -565,7 +565,7 @@ const updateSendingProfile = async () => {
 const deleteGroupById = async (id) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`${import.meta.env.VITE_SERVICE_API_URL}/api/smtp/${id}`, {
+        await axios.delete(`/api/smtp/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',

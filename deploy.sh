@@ -79,3 +79,4 @@ echo ""
 echo "📊 Container status:"
 docker-compose -f $COMPOSE_FILE ps
 
+

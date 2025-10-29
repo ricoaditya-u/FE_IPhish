@@ -360,7 +360,7 @@ const editData = (data) => {
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/campaigns/`, {
+        const response = await axios.get('/api/campaigns/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -375,7 +375,7 @@ const fetchEmailTemplates = async () => {
     isLoadingTemplates.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/templates/`, {
+        const response = await axios.get('/api/templates/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -399,7 +399,7 @@ const fetchLandingPages = async () => {
     isLoadingLandingPages.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/pages/`, {
+        const response = await axios.get('/api/pages/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -423,7 +423,7 @@ const fetchSendingProfiles = async () => {
     isLoadingSendingProfiles.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/smtp/`, {
+        const response = await axios.get('/api/smtp/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -448,7 +448,7 @@ const fetchGroups = async () => {
     isLoadingGroups.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/groups/`, {
+        const response = await axios.get('/api/groups/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -516,7 +516,7 @@ const createCampaign = async () => {
             send_by_date: launchDateISO
         }
 
-        const response = await axios.post(`${import.meta.env.VITE_SERVICE_API_URL}/api/campaigns/`, campaignData, {
+        const response = await axios.post('/api/campaigns/', campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -605,7 +605,7 @@ const updateCampaign = async (campaignId) => {
 
         console.log('Updating campaign with data:', campaignData)
 
-        const response = await axios.post(`${import.meta.env.VITE_SERVICE_API_URL}/api/campaigns/${campaignId}`, campaignData, {
+        const response = await axios.post(`/api/campaigns/${campaignId}`, campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -628,7 +628,7 @@ const deleteCampaign = async (campaignId) => {
         
         console.log('Deleting campaign with ID:', campaignId)
 
-        const response = await axios.delete(`${import.meta.env.VITE_SERVICE_API_URL}/api/campaigns/${campaignId}`, {
+        const response = await axios.delete(`/api/campaigns/${campaignId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -650,7 +650,7 @@ const getCampaignResults = async (campaignId) => {
         
         console.log('Getting campaign results for ID:', campaignId)
 
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/campaigns/${campaignId}/results`, {
+        const response = await axios.get(`/api/campaigns/${campaignId}/results`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -672,7 +672,7 @@ const completeCampaign = async (campaignId) => {
         
         console.log('Completing campaign with ID:', campaignId)
 
-        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/campaigns/${campaignId}/complete`, {
+        const response = await axios.get(`/api/campaigns/${campaignId}/complete`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -865,7 +865,7 @@ const handleAddOrUpdateEvent = async () => {
 const handleDeleteEvent = async (data) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`${import.meta.env.VITE_SERVICE_API_URL}/api/campaigns/${data.id}`, {
+        await axios.delete(`/api/campaigns/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -929,7 +929,7 @@ const loadCampaignEvents = async () => {
                 end: campaign.launch_date,
                 extendedProps: {
                     calendar: campaign.status === 'Completed' ? 'Success' : 
-                             campaign.status === 'In progress' ? 'Primary' : 'Warning',
+                                campaign.status === 'In progress' ? 'Primary' : 'Warning',
                     description: `Status: ${campaign.status}`
                 }
             }
