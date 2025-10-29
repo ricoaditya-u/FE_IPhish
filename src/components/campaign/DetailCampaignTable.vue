@@ -62,7 +62,7 @@ const errorMessage = ref('')
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/campaigns/${props.campaignId}`, {
+        const response = await axios.get(`${import.meta.env.VITE_SERVICE_API_URL}/api/campaigns/${props.campaignId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
