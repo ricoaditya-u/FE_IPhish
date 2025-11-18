@@ -20,7 +20,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://admin.gophish.local:3333',
+        target: 'https://api.managementcorp.my.id',
         changeOrigin: true,
         secure: false, // karena Gophish pakai self-signed cert
       },

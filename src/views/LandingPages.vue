@@ -346,7 +346,7 @@ const editPage = async (data) => {
             redirect_url: data.redirect_url,
             modified_date: new Date().toISOString(),
         }
-        await axios.put(`/api/pages/${data.id}`, body, {
+        await axios.put(`/api/phishing/pages/${data.id}`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -368,7 +368,7 @@ onMounted(() => {
 const handleDeleteEvent = async (data) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/pages/${data.id}`, {
+        await axios.delete(`/api/phishing/pages/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
