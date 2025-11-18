@@ -111,7 +111,7 @@ const getReportCampaign = async () => {
             "email_reported": summary.value.stats.email_reported
         }
 
-        const response = await axios.post('/gateway-api/campaigns/report', campaignData, {
+        const response = await axios.post('/api/analytic/report', campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

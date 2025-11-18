@@ -234,7 +234,7 @@ const editData = (data) => {
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/templates/', {
+        const response = await axios.get('/api/phishing/templates/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -273,7 +273,7 @@ const savePage = async () => {
             modified_date: new Date().toISOString(),
             attachments: [],
         }
-        await axios.post('/api/templates/', body, {
+        await axios.post('/api/phishing/templates/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',

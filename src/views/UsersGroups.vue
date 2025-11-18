@@ -225,7 +225,7 @@ const handleFileUpload = async (event) => {
 
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.post('/api/import/group', formData,
+        const response = await axios.post('/api/phishing/import/group', formData,
             {
                 headers: {
                     'Authorization': `Bearer ${token}`, // Ganti dengan API key kamu
@@ -371,7 +371,7 @@ function deleteGroup(id) {
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/groups/', {
+        const response = await axios.get('/api/phishing/groups/', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -420,7 +420,7 @@ const getGroupById = async (id) => {
 const getGroupSummary = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/groups/summary', {
+        const response = await axios.get('/api/phishing/groups/summary', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -464,7 +464,7 @@ const saveGroup = async () => {
                 }))
             ]
         }
-        await axios.post('/api/groups/', body, {
+        await axios.post('/api/phishing/groups/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -534,7 +534,7 @@ const importGroups = async (file) => {
         const formData = new FormData()
         formData.append('file', file)
 
-        await axios.post('/api/import/group', formData, {
+        await axios.post('/api/phishing/import/group', formData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',

@@ -285,7 +285,7 @@ const editData = (data) => {
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/pages/', {
+        const response = await axios.get('/api/phishing/pages/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -319,7 +319,7 @@ const savePage = async () => {
             redirect_url: "http://example.com",
             modified_date: new Date().toISOString(),
         }
-        await axios.post('/api/pages/', body, {
+        await axios.post('/api/phishing/pages/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',

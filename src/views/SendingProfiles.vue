@@ -468,7 +468,7 @@ const renderEventContent = (eventInfo) => {
 const getAllSendingProfiles = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/smtp/', {
+        const response = await axios.get('/api/phishing/smtp/', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -514,7 +514,7 @@ const saveSendingProfile = async () => {
 
         }
 
-        const response = await axios.post('/api/smtp/', body, {
+        const response = await axios.post('/api/phishing/smtp/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',

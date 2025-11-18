@@ -360,7 +360,7 @@ const editData = (data) => {
 const fetchPages = async () => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/campaigns/', {
+        const response = await axios.get('/api/phishing/campaigns/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -375,7 +375,7 @@ const fetchEmailTemplates = async () => {
     isLoadingTemplates.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/templates/', {
+        const response = await axios.get('/api/phishing/templates/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -399,7 +399,7 @@ const fetchLandingPages = async () => {
     isLoadingLandingPages.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/pages/', {
+        const response = await axios.get('/api/phishing/pages/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -423,7 +423,7 @@ const fetchSendingProfiles = async () => {
     isLoadingSendingProfiles.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/smtp/', {
+        const response = await axios.get('/api/phishing/smtp/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -448,7 +448,7 @@ const fetchGroups = async () => {
     isLoadingGroups.value = true
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/groups/', {
+        const response = await axios.get('/api/phishing/groups/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -516,7 +516,7 @@ const createCampaign = async () => {
             send_by_date: launchDateISO
         }
 
-        const response = await axios.post('/api/campaigns/', campaignData, {
+        const response = await axios.post('/api/phishing/campaigns/', campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
