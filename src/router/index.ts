@@ -1,3 +1,4 @@
+import keycloak from '@/auth/keycloak'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -20,6 +21,7 @@ const router = createRouter({
       component: () => import('../views/Dashboard.vue'),
       meta: {
         title: 'Phising Dashboard',
+        requiresAuth: true,
       },
     },
     {
@@ -28,6 +30,7 @@ const router = createRouter({
       component: () => import('../views/Campaigns.vue'),
       meta: {
         title: 'Campaigns IPhish',
+        requiresAuth: true,
       },
     },
     {
@@ -36,6 +39,7 @@ const router = createRouter({
       component: () => import('../views/UsersGroups.vue'),
       meta: {
         title: 'Users & Groups',
+        requiresAuth: true,
       },
     },
     {
@@ -44,6 +48,7 @@ const router = createRouter({
       component: () => import('../views/EmailTemplates.vue'),
       meta: {
         title: 'Email Templates',
+        requiresAuth: true,
       },
     },
     {
@@ -52,6 +57,7 @@ const router = createRouter({
       component: () => import('../views/LandingPages.vue'),
       meta: {
         title: 'Landing Pages',
+        requiresAuth: true,
       },
     },
     {
@@ -60,6 +66,7 @@ const router = createRouter({
       component: () => import('../views/SendingProfiles.vue'),
       meta: {
         title: 'Sending Profiles',
+        requiresAuth: true,
       },
     },
     {
@@ -68,6 +75,7 @@ const router = createRouter({
       component: () => import('../views/UserManagement.vue'),
       meta: {
         title: 'User Management',
+        requiresAuth: true,
       },
     },
     {
@@ -76,6 +84,7 @@ const router = createRouter({
       component: () => import('../views/AccountSettings.vue'),
       meta: {
         title: 'Account Settings',
+        requiresAuth: true,
       },
     },
     {
@@ -84,6 +93,7 @@ const router = createRouter({
       component: () => import('../views/DetailCampaign.vue'),
       meta: {
         title: 'Detail Campaign',
+        requiresAuth: true,
       },
     },
 
@@ -222,7 +232,21 @@ const router = createRouter({
 
 export default router
 
-router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} | iPhish - AI Phising Simulation Platform`
-  next()
-})
+router.beforeEach(async (to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (keycloak.authenticated) {
+      try {
+        await keycloak.updateToken(30);
+        next();
+      } catch (error) {
+        console.error("Failed to refresh token:", error);
+        keycloak.logout();
+      }
+    } else {
+      keycloak.login({redirectUri: window.location.origin + to.fullPath});
+    }
+  } else {
+    next();
+  }
+  // document.title = `${to.meta.title} | iPhish - AI Phising Simulation Platform`
+});

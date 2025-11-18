@@ -467,7 +467,7 @@ const renderEventContent = (eventInfo) => {
 
 const getAllSendingProfiles = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const response = await axios.get('/api/phishing/smtp/', {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -482,7 +482,7 @@ const getAllSendingProfiles = async () => {
 
 const getSendingProfileById = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const response = await axios.get(`/api/phishing/smtp/${id.value}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -498,7 +498,7 @@ const getSendingProfileById = async () => {
 
 const saveSendingProfile = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             name: profileName.value,
             interface_type: "SMTP",
@@ -531,7 +531,7 @@ const saveSendingProfile = async () => {
 
 const updateSendingProfile = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             id: id.value,
             name: profileName.value,
@@ -564,7 +564,7 @@ const updateSendingProfile = async () => {
 
 const deleteGroupById = async (id) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         await axios.delete(`/api/phishing/smtp/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -581,7 +581,7 @@ const deleteGroupById = async (id) => {
 
 const sendTestEmail = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             first_name: firstName.value,
             last_name: lastName.value,

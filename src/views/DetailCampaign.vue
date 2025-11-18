@@ -59,7 +59,7 @@ const isLoading = ref(true)
 
 const fetchPages = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const response = await axios.get(`/api/phishing/campaigns/${campaignId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -75,7 +75,7 @@ const fetchPages = async () => {
 
 const getCampaignSummary = async (campaignId) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
 
         const response = await axios.get(`/api/phishing/campaigns/${campaignId}/summary`, {
             headers: {
@@ -93,7 +93,7 @@ const getCampaignSummary = async (campaignId) => {
 
 const getReportCampaign = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
 
         if (!summary.value?.stats) {
             console.error('Summary data not available')
@@ -141,7 +141,7 @@ async function confirmCompleteCampaign(data) {
 
     if (result.isConfirmed) {
         try {
-            const token = import.meta.env.VITE_API_TOKEN
+            const token = keycloak.token
             
             console.log('Completing campaign for ID:', campaignId)
 

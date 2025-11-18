@@ -284,7 +284,7 @@ const editData = (data) => {
 
 const fetchPages = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const response = await axios.get('/api/phishing/pages/', {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -309,7 +309,7 @@ const handleAddOrUpdateEvent = () => {
 
 const savePage = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             id: id.value,
             name: pageName.value,
@@ -336,7 +336,7 @@ const savePage = async () => {
 
 const editPage = async (data) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             id: data.id,
             name: pageName.value,
@@ -367,7 +367,7 @@ onMounted(() => {
 
 const handleDeleteEvent = async (data) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         await axios.delete(`/api/phishing/pages/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,

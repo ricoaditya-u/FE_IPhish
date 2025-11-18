@@ -9,6 +9,7 @@ services:
         - WEB_BYTE_PLUSE
         - API_KEY_BYTEPLUSE
         - MODEL_TEXT
+        - KCS
     container_name: iphish-frontend
     ports:
       - "80:80"

@@ -61,7 +61,7 @@ const errorMessage = ref('')
 
 const fetchPages = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const response = await axios.get(`/api/phishing/campaigns/${props.campaignId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,

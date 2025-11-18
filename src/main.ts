@@ -10,10 +10,27 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueApexCharts from 'vue3-apexcharts'
+import kecloak from './auth/keycloak';
+
 
 const app = createApp(App)
+const initKeycloak = async () => {
+  try {
+    const authenticated = await kecloak.init({
+      onLoad: 'login-required',
+      checkLoginIframe: false,
+    });
+    if (authenticated) {
+      console.log('authenticated');
+      app.use(router)
+      app.use(VueApexCharts)
+      app.mount('#app')
+    } else {
+      console.log('authentication failed');
+    }
+  } catch (error) {
+    console.error('Failed to initialize authentication', error);
+  }
+};
 
-app.use(router)
-app.use(VueApexCharts)
-
-app.mount('#app')
+initKeycloak();
