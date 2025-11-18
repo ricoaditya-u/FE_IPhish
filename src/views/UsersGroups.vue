@@ -289,7 +289,7 @@ const editData = async (data) => {
     // Load group members/targets
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/groups/${data.id}`, {
+        const response = await axios.get(`/api/phishing/groups/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -405,7 +405,7 @@ onMounted(() => {
 const getGroupById = async (id) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/groups/${id}`, {
+        const response = await axios.get(`/api/phishing/groups/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -435,7 +435,7 @@ const getGroupSummary = async () => {
 const getGroupSummaryById = async (id) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/groups/${id}/summary`, {
+        const response = await axios.get(`/api/phishing/groups/${id}/summary`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -497,7 +497,7 @@ const updateGroup = async (id) => {
                 }))
             ]
         }
-        await axios.put(`/api/groups/${id}`, body, {
+        await axios.put(`/api/phishing/groups/${id}`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -514,7 +514,7 @@ const updateGroup = async (id) => {
 const deleteGroupById = async (id) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/groups/${id}`, {
+        await axios.delete(`/api/phishing/groups/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',

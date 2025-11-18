@@ -605,7 +605,7 @@ const updateCampaign = async (campaignId) => {
 
         console.log('Updating campaign with data:', campaignData)
 
-        const response = await axios.post(`/api/campaigns/${campaignId}`, campaignData, {
+        const response = await axios.post(`/api/phishing/campaigns/${campaignId}`, campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -628,7 +628,7 @@ const deleteCampaign = async (campaignId) => {
         
         console.log('Deleting campaign with ID:', campaignId)
 
-        const response = await axios.delete(`/api/campaigns/${campaignId}`, {
+        const response = await axios.delete(`/api/phishing/campaigns/${campaignId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -650,7 +650,7 @@ const getCampaignResults = async (campaignId) => {
         
         console.log('Getting campaign results for ID:', campaignId)
 
-        const response = await axios.get(`/api/campaigns/${campaignId}/results`, {
+        const response = await axios.get(`/api/phishing/campaigns/${campaignId}/results`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -672,7 +672,7 @@ const completeCampaign = async (campaignId) => {
         
         console.log('Completing campaign with ID:', campaignId)
 
-        const response = await axios.get(`/api/campaigns/${campaignId}/complete`, {
+        const response = await axios.get(`/api/phishing/campaigns/${campaignId}/complete`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -865,7 +865,7 @@ const handleAddOrUpdateEvent = async () => {
 const handleDeleteEvent = async (data) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/campaigns/${data.id}`, {
+        await axios.delete(`/api/phishing/campaigns/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

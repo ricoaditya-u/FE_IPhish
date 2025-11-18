@@ -319,7 +319,7 @@ const editPage = async (data) => {
 const handleDeleteEvent = async (data) => {
     try {
         const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/templates/${data.id}`, {
+        await axios.delete(`/api/phishing/templates/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
