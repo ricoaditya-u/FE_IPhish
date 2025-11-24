@@ -60,7 +60,9 @@
 <script setup>
 import { UserCircleIcon, ChevronDownIcon, LogoutIcon, SettingsIcon, InfoCircleIcon } from '@/icons'
 import { RouterLink } from 'vue-router'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, getCurrentInstance } from 'vue'
+
+const { proxy } = getCurrentInstance()
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
@@ -78,9 +80,9 @@ const closeDropdown = () => {
 }
 
 const signOut = () => {
-  // Implement sign out logic here
-  console.log('Signing out...')
-  closeDropdown()
+  proxy.$keycloak.logout({
+    redirectUri: window.location.origin
+  })
 }
 
 const handleClickOutside = (event) => {

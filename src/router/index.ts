@@ -7,16 +7,16 @@ const router = createRouter({
     return savedPosition || { left: 0, top: 0 }
   },
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'Welcome to iPhish',
+    //   component: () => import('../views/landingpage.vue'),
+    //   meta: {
+    //     title: 'Welcome to iPhish',
+    //   },
+    // },
     {
       path: '/',
-      name: 'Welcome to iPhish',
-      component: () => import('../views/landingpage.vue'),
-      meta: {
-        title: 'Welcome to iPhish',
-      },
-    },
-    {
-      path: '/dashboard',
       name: 'Phising Dashboard',
       component: () => import('../views/Dashboard.vue'),
       meta: {
