@@ -33,16 +33,15 @@
           </router-link>
         </li>
       </ul>
-      <router-link
-        to="/signin"
+      <button
         @click="signOut"
-        class="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+        class="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300 w-full text-left"
       >
         <LogoutIcon
           class="text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300"
         />
         Sign out
-      </router-link>
+      </button>
     </div>
     <!-- Dropdown End -->
   </div>
@@ -51,9 +50,8 @@
 <script setup>
 import { UserCircleIcon, ChevronDownIcon, LogoutIcon, SettingsIcon, InfoCircleIcon } from '@/icons'
 import { RouterLink } from 'vue-router'
-import { ref, onMounted, onUnmounted, getCurrentInstance } from 'vue'
-
-const { proxy } = getCurrentInstance()
+import { ref, onMounted, onUnmounted } from 'vue'
+import keycloak from '@/auth/keycloak'
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
@@ -71,9 +69,19 @@ const closeDropdown = () => {
 }
 
 const signOut = () => {
-  proxy.$keycloak.logout({
-    redirectUri: window.location.origin
-  })
+  // Tutup dropdown sebelum logout
+  closeDropdown()
+  
+  // Logout dari Keycloak
+  try {
+    keycloak.logout({
+      redirectUri: window.location.origin
+    })
+  } catch (error) {
+    console.error('Logout error:', error)
+    // Fallback: redirect ke halaman signin jika logout gagal
+    window.location.href = '/signin'
+  }
 }
 
 const handleClickOutside = (event) => {
