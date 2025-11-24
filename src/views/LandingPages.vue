@@ -231,6 +231,7 @@ import LandingPagesTable from '../components/landingpage/LandingPageTable.vue'
 import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue'
 import Modal from '@/components/profile/Modal.vue'
 import axios from 'axios'
+import keycloak from "@/auth/keycloak";
 
 const currentPageTitle = ref('Landing Pages')
 import { ref, onMounted } from 'vue'

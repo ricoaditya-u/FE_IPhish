@@ -183,6 +183,7 @@ import UsersAndGroupsTable from '../components/usersngroups/UsersAndGroupsTable.
 import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue'
 import Modal from '@/components/profile/Modal.vue'
 import axios from 'axios'
+import keycloak from "@/auth/keycloak";
 
 const currentPageTitle = ref('Users & Groups')
 import { ref, onMounted } from 'vue'

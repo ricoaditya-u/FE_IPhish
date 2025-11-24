@@ -354,6 +354,7 @@ const currentPageTitle = ref('Sending Profiles')
 import { ref, reactive, onMounted } from 'vue'
 import Modal from '@/components/profile/Modal.vue'
 import SendingProfilesTable from '../components/sendingprofiles/SendingProfilesTable.vue'
+import keycloak from "@/auth/keycloak";
 
 const checkboxOne = ref(false)
 const selectedEvent = ref(null)

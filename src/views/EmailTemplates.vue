@@ -178,6 +178,7 @@ import TipsAI from '../components/ui/TipsAI.vue'
 import TipsHtmlTemplate from "@/components/ui/TipsHtmlTemplate.vue";
 import TipsTextTemplate from "@/components/ui/TipsTextTemplate.vue";
 import axios from 'axios'
+import keycloak from "@/auth/keycloak";
 
 const currentPageTitle = ref('Email Templates')
 const generateAI = ref(false)
