@@ -284,8 +284,8 @@ const editData = (data) => {
 
 const fetchPages = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/pages/', {
+        const token = keycloak.token
+        const response = await axios.get('/api/phishing/pages/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -309,7 +309,7 @@ const handleAddOrUpdateEvent = () => {
 
 const savePage = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             id: id.value,
             name: pageName.value,
@@ -319,7 +319,7 @@ const savePage = async () => {
             redirect_url: "http://example.com",
             modified_date: new Date().toISOString(),
         }
-        await axios.post('/api/pages/', body, {
+        await axios.post('/api/phishing/pages/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -336,7 +336,7 @@ const savePage = async () => {
 
 const editPage = async (data) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             id: data.id,
             name: pageName.value,
@@ -346,7 +346,7 @@ const editPage = async (data) => {
             redirect_url: data.redirect_url,
             modified_date: new Date().toISOString(),
         }
-        await axios.put(`/api/pages/${data.id}`, body, {
+        await axios.put(`/api/phishing/pages/${data.id}`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -367,8 +367,8 @@ onMounted(() => {
 
 const handleDeleteEvent = async (data) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/pages/${data.id}`, {
+        const token = keycloak.token
+        await axios.delete(`/api/phishing/pages/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

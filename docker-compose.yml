@@ -1,19 +1,27 @@
-version: '3.8'
-
 services:
-  gophish-fe:
+  iphish-fe:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: gophish-frontend
+      args:
+        - VITE_API_TOKEN
+        - VITE_API_KEY_MODELARK
+        - WEB_BYTE_PLUSE
+        - API_KEY_BYTEPLUSE
+        - MODEL_TEXT
+        - KCS
+    container_name: iphish-frontend
     ports:
-      - "3000:80"  # Map port 80 container ke port 3000 host
+      - "80:80"
+      - "443:443"
     restart: unless-stopped
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - app-network
+      iphish_iphish-net:
+        ipv4_address: 172.22.0.12
 
 networks:
-  app-network:
-    driver: bridge
-
-
+  iphish_iphish-net:
+    external: true

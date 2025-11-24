@@ -45,8 +45,8 @@ const deskripsi2 = ["Skor Potential Breach = (S + (C - S)*p) / N", "S: Jumlah su
 // Methods
 const fetchPages = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/campaigns/', {
+        const token = keycloak.token
+        const response = await axios.get('/api/phishing/campaigns/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -59,8 +59,8 @@ const fetchPages = async () => {
 
 const getDataCurva = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/gateway-api/campaigns/trend', {
+        const token = keycloak.token
+        const response = await axios.get('/api/analytic/trend', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -74,8 +74,8 @@ const getDataCurva = async () => {
 
 const getDataAverage = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/gateway-api/campaigns/report/average', {
+        const token = keycloak.token
+        const response = await axios.get('/api/analytic/report/average', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

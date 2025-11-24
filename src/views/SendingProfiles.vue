@@ -467,8 +467,8 @@ const renderEventContent = (eventInfo) => {
 
 const getAllSendingProfiles = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/smtp/', {
+        const token = keycloak.token
+        const response = await axios.get('/api/phishing/smtp/', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -482,8 +482,8 @@ const getAllSendingProfiles = async () => {
 
 const getSendingProfileById = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/smtp/${id.value}`, {
+        const token = keycloak.token
+        const response = await axios.get(`/api/phishing/smtp/${id.value}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -498,7 +498,7 @@ const getSendingProfileById = async () => {
 
 const saveSendingProfile = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             name: profileName.value,
             interface_type: "SMTP",
@@ -514,7 +514,7 @@ const saveSendingProfile = async () => {
 
         }
 
-        const response = await axios.post('/api/smtp/', body, {
+        const response = await axios.post('/api/phishing/smtp/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -531,7 +531,7 @@ const saveSendingProfile = async () => {
 
 const updateSendingProfile = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             id: id.value,
             name: profileName.value,
@@ -547,7 +547,7 @@ const updateSendingProfile = async () => {
             ]
         }
 
-        const response = await axios.put(`/api/smtp/${id.value}`, body, {
+        const response = await axios.put(`/api/phishing/smtp/${id.value}`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -564,8 +564,8 @@ const updateSendingProfile = async () => {
 
 const deleteGroupById = async (id) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/smtp/${id}`, {
+        const token = keycloak.token
+        await axios.delete(`/api/phishing/smtp/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -581,7 +581,7 @@ const deleteGroupById = async (id) => {
 
 const sendTestEmail = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             first_name: firstName.value,
             last_name: lastName.value,

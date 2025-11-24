@@ -224,8 +224,8 @@ const handleFileUpload = async (event) => {
     loading.value = true
 
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.post('/api/import/group', formData,
+        const token = keycloak.token
+        const response = await axios.post('/api/phishing/import/group', formData,
             {
                 headers: {
                     'Authorization': `Bearer ${token}`, // Ganti dengan API key kamu
@@ -288,8 +288,8 @@ const editData = async (data) => {
     
     // Load group members/targets
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/groups/${data.id}`, {
+        const token = keycloak.token
+        const response = await axios.get(`/api/phishing/groups/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -370,8 +370,8 @@ function deleteGroup(id) {
 
 const fetchPages = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/groups/', {
+        const token = keycloak.token
+        const response = await axios.get('/api/phishing/groups/', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -385,7 +385,7 @@ const fetchPages = async () => {
 
 const getGroups = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const response = await axios.get('api/groups/', {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -404,8 +404,8 @@ onMounted(() => {
 
 const getGroupById = async (id) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/groups/${id}`, {
+        const token = keycloak.token
+        const response = await axios.get(`/api/phishing/groups/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -419,8 +419,8 @@ const getGroupById = async (id) => {
 
 const getGroupSummary = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/groups/summary', {
+        const token = keycloak.token
+        const response = await axios.get('/api/phishing/groups/summary', {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -434,8 +434,8 @@ const getGroupSummary = async () => {
 
 const getGroupSummaryById = async (id) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/groups/${id}/summary`, {
+        const token = keycloak.token
+        const response = await axios.get(`/api/phishing/groups/${id}/summary`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -449,7 +449,7 @@ const getGroupSummaryById = async (id) => {
 
 const saveGroup = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             id: id.value,
             name: groupName.value,
@@ -464,7 +464,7 @@ const saveGroup = async () => {
                 }))
             ]
         }
-        await axios.post('/api/groups/', body, {
+        await axios.post('/api/phishing/groups/', body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -482,7 +482,7 @@ const saveGroup = async () => {
 
 const updateGroup = async (id) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const body = {
             id: id,
             name: groupName.value,
@@ -497,7 +497,7 @@ const updateGroup = async (id) => {
                 }))
             ]
         }
-        await axios.put(`/api/groups/${id}`, body, {
+        await axios.put(`/api/phishing/groups/${id}`, body, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -513,8 +513,8 @@ const updateGroup = async (id) => {
 
 const deleteGroupById = async (id) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/groups/${id}`, {
+        const token = keycloak.token
+        await axios.delete(`/api/phishing/groups/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -530,11 +530,11 @@ const deleteGroupById = async (id) => {
 
 const importGroups = async (file) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         const formData = new FormData()
         formData.append('file', file)
 
-        await axios.post('/api/import/group', formData, {
+        await axios.post('/api/phishing/import/group', formData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',

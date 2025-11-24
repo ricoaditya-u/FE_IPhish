@@ -318,6 +318,7 @@ import Modal from '@/components/profile/Modal.vue'
 import CampaignTable from '../components/campaign/CampaignTable.vue'
 import AlertTips from '../components/ui/AlertTips.vue'
 import { groupIntersectingEntries } from '@fullcalendar/core/internal'
+import keycloak from "@/auth/keycloak";
 
 const calendarRef = ref(null)
 const isOpen = ref(false)
@@ -359,8 +360,8 @@ const editData = (data) => {
 
 const fetchPages = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/campaigns/', {
+        const token = keycloak.token
+        const response = await axios.get('/api/phishing/campaigns/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -374,8 +375,8 @@ const fetchPages = async () => {
 const fetchEmailTemplates = async () => {
     isLoadingTemplates.value = true
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/templates/', {
+        const token = keycloak.token
+        const response = await axios.get('/api/phishing/templates/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -398,8 +399,8 @@ const fetchEmailTemplates = async () => {
 const fetchLandingPages = async () => {
     isLoadingLandingPages.value = true
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/pages/', {
+        const token = keycloak.token
+        const response = await axios.get('/api/phishing/pages/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -422,8 +423,8 @@ const fetchLandingPages = async () => {
 const fetchSendingProfiles = async () => {
     isLoadingSendingProfiles.value = true
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/smtp/', {
+        const token = keycloak.token
+        const response = await axios.get('/api/phishing/smtp/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -447,8 +448,8 @@ const fetchSendingProfiles = async () => {
 const fetchGroups = async () => {
     isLoadingGroups.value = true
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get('/api/groups/', {
+        const token = keycloak.token
+        const response = await axios.get('/api/phishing/groups/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -470,7 +471,7 @@ const fetchGroups = async () => {
 
 const createCampaign = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         
         // Validasi form
         if (!campaignTitle.value) {
@@ -516,7 +517,7 @@ const createCampaign = async () => {
             send_by_date: launchDateISO
         }
 
-        const response = await axios.post('/api/campaigns/', campaignData, {
+        const response = await axios.post('/api/phishing/campaigns/', campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -556,7 +557,7 @@ const createCampaign = async () => {
 
 const updateCampaign = async (campaignId) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         
         // Validasi form
         if (!campaignTitle.value) {
@@ -605,7 +606,7 @@ const updateCampaign = async (campaignId) => {
 
         console.log('Updating campaign with data:', campaignData)
 
-        const response = await axios.post(`/api/campaigns/${campaignId}`, campaignData, {
+        const response = await axios.post(`/api/phishing/campaigns/${campaignId}`, campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -624,11 +625,11 @@ const updateCampaign = async (campaignId) => {
 
 const deleteCampaign = async (campaignId) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         
         console.log('Deleting campaign with ID:', campaignId)
 
-        const response = await axios.delete(`/api/campaigns/${campaignId}`, {
+        const response = await axios.delete(`/api/phishing/campaigns/${campaignId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -646,11 +647,11 @@ const deleteCampaign = async (campaignId) => {
 
 const getCampaignResults = async (campaignId) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         
         console.log('Getting campaign results for ID:', campaignId)
 
-        const response = await axios.get(`/api/campaigns/${campaignId}/results`, {
+        const response = await axios.get(`/api/phishing/campaigns/${campaignId}/results`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -668,11 +669,11 @@ const getCampaignResults = async (campaignId) => {
 
 const completeCampaign = async (campaignId) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
         
         console.log('Completing campaign with ID:', campaignId)
 
-        const response = await axios.get(`/api/campaigns/${campaignId}/complete`, {
+        const response = await axios.get(`/api/phishing/campaigns/${campaignId}/complete`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -864,8 +865,8 @@ const handleAddOrUpdateEvent = async () => {
 
 const handleDeleteEvent = async (data) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        await axios.delete(`/api/campaigns/${data.id}`, {
+        const token = keycloak.token
+        await axios.delete(`/api/phishing/campaigns/${data.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

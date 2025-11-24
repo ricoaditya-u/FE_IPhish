@@ -59,8 +59,8 @@ const isLoading = ref(true)
 
 const fetchPages = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
-        const response = await axios.get(`/api/campaigns/${campaignId}`, {
+        const token = keycloak.token
+        const response = await axios.get(`/api/phishing/campaigns/${campaignId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -75,9 +75,9 @@ const fetchPages = async () => {
 
 const getCampaignSummary = async (campaignId) => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
 
-        const response = await axios.get(`/api/campaigns/${campaignId}/summary`, {
+        const response = await axios.get(`/api/phishing/campaigns/${campaignId}/summary`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -93,7 +93,7 @@ const getCampaignSummary = async (campaignId) => {
 
 const getReportCampaign = async () => {
     try {
-        const token = import.meta.env.VITE_API_TOKEN
+        const token = keycloak.token
 
         if (!summary.value?.stats) {
             console.error('Summary data not available')
@@ -111,7 +111,7 @@ const getReportCampaign = async () => {
             "email_reported": summary.value.stats.email_reported
         }
 
-        const response = await axios.post('/gateway-api/campaigns/report', campaignData, {
+        const response = await axios.post('/api/analytic/report', campaignData, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -141,11 +141,11 @@ async function confirmCompleteCampaign(data) {
 
     if (result.isConfirmed) {
         try {
-            const token = import.meta.env.VITE_API_TOKEN
+            const token = keycloak.token
             
             console.log('Completing campaign for ID:', campaignId)
 
-            const response = await axios.get(`/api/campaigns/${campaignId}/complete`, {
+            const response = await axios.get(`/api/phishing/campaigns/${campaignId}/complete`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
